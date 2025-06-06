@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { CreateUser, GetUsers } from "../../global/api/firebase/auth/auth";
+import { GetUsers } from "../../global/api/firebase/auth/auth";
+import { RegisterHandler } from "./register";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const [name, setName] = useState<string>("");
@@ -7,19 +10,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState<string>("");
   const [rePassword, setRePassword] = useState<string>("");
 
-  const emailPattern =
-    /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
-
-  const RegisterHandler = () => {
-    if (name && email && password && rePassword) {
-      if (password == rePassword && email.match(emailPattern)) {
-        CreateUser(name, email, rePassword);
-        console.log("Creater success");
-        GetUsers();
-      }
-    }
-    return;
-  };
+  const navigator = useNavigate();
 
   useEffect(() => {
     GetUsers();
@@ -79,8 +70,29 @@ export default function RegisterPage() {
 
         <button
           className="hover:cursor-pointer"
-          onClick={() => {
-            RegisterHandler();
+          onClick={async () => {
+            const registRes = await RegisterHandler(
+              name,
+              email,
+              password,
+              rePassword
+            );
+
+            if (registRes.success) {
+              Swal.fire({
+                title: "Create User successful!",
+                icon: "success",
+                draggable: true,
+                confirmButtonText: "Back to Login",
+              }).then(() => {
+                navigator("/login");
+              });
+
+              setName("");
+              setEmail("");
+              setPassword("");
+              setRePassword("");
+            }
           }}
         >
           Create User

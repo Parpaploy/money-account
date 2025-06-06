@@ -3,17 +3,19 @@ import {
   doc,
   getDocs,
   getFirestore,
+  query,
   setDoc,
+  where,
 } from "firebase/firestore";
 
 export const GetUsers = async (): Promise<any> => {
   const usersCollection = collection(getFirestore(), "users");
 
-  const users = await getDocs(usersCollection);
+  await getDocs(usersCollection);
 
-  users.docs.map((user) => {
-    console.log("uid:", user.id, "userData:", user.data());
-  });
+  //   users.docs.map((user) => {
+  //     console.log("uid:", user.id, "userData:", user.data());
+  //   });
 };
 
 export const CreateUser = async (
@@ -31,4 +33,19 @@ export const CreateUser = async (
     email: email,
     password: password,
   });
+};
+
+export const CheckUserExist = async (
+  name: string,
+  email: string
+): Promise<{ existName: boolean; existEmail: boolean }> => {
+  const usersCollection = collection(getFirestore(), "users");
+
+  const nameQuery = query(usersCollection, where("name", "==", name));
+  const existNames = await getDocs(nameQuery);
+
+  const emailQuery = query(usersCollection, where("email", "==", email));
+  const existEmails = await getDocs(emailQuery);
+
+  return { existName: !existNames.empty, existEmail: !existEmails.empty };
 };
