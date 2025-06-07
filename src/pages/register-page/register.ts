@@ -1,8 +1,8 @@
 import Swal from "sweetalert2";
+
 import {
-  CheckUserExist,
+  CheckRegisterUserExist,
   CreateUser,
-  GetUsers,
 } from "../../global/api/firebase/auth/auth";
 
 const emailPattern =
@@ -12,19 +12,25 @@ export const RegisterHandler = async (
   name: string,
   email: string,
   password: string,
-  rePassword: string
-): Promise<{ success: boolean }> => {
+  rePassword: string,
+  navigator: (path: string) => void,
+  setNameInput: (input: string) => void,
+  setEmailInput: (input: string) => void,
+  setPasswordInput: (input: string) => void,
+  setRePasswordInput: (input: string) => void
+): Promise<any> => {
   if (name && email && password && rePassword) {
-    const { existName, existEmail } = await CheckUserExist(name, email);
+    const { existName, existEmail } = await CheckRegisterUserExist(name, email);
     // Wrong Email Pattern
     if (!email.match(emailPattern)) {
       Swal.fire({
         icon: "error",
-        title: "Please provide the same password",
+        title: "Please provide the correct email",
         confirmButtonText: "Ok",
+      }).then(() => {
+        setEmailInput("");
       });
-
-      return { success: false };
+      return;
     }
 
     // Double Name
@@ -34,9 +40,10 @@ export const RegisterHandler = async (
         icon: "warning",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Ok",
+      }).then(() => {
+        setNameInput("");
       });
-
-      return { success: false };
+      return;
     }
 
     // Double Email
@@ -46,9 +53,10 @@ export const RegisterHandler = async (
         icon: "warning",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Ok",
+      }).then(() => {
+        setEmailInput("");
       });
-
-      return { success: false };
+      return;
     }
 
     // Wrong Password
@@ -57,18 +65,30 @@ export const RegisterHandler = async (
         icon: "error",
         title: "Please provide the same password",
         confirmButtonText: "Ok",
+      }).then(() => {
+        setRePasswordInput("");
       });
-
-      return { success: false };
+      return;
     }
 
     // Success
     if (password == rePassword && email.match(emailPattern)) {
       if (!existName && !existEmail) {
         await CreateUser(name, email, rePassword);
-        await GetUsers();
 
-        return { success: true };
+        Swal.fire({
+          title: "Create User successfully!",
+          icon: "success",
+          draggable: true,
+          confirmButtonText: "Back to Login",
+        }).then(() => {
+          setNameInput("");
+          setEmailInput("");
+          setPasswordInput("");
+          setRePasswordInput("");
+          navigator("/login");
+        });
+        return;
       }
     }
   }
@@ -78,5 +98,4 @@ export const RegisterHandler = async (
     title: "Please provide the properly data",
     confirmButtonText: "Ok",
   });
-  return { success: false };
 };

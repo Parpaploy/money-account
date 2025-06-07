@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { GetUsers } from "../../global/api/firebase/auth/auth";
 import { RegisterHandler } from "./register";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import InputBox from "../../components/input-box";
 
 export default function RegisterPage() {
   const [name, setName] = useState<string>("");
@@ -13,89 +12,73 @@ export default function RegisterPage() {
   const navigator = useNavigate();
 
   useEffect(() => {
-    GetUsers();
+    setName("");
+    setEmail("");
+    setPassword("");
+    setRePassword("");
     // GetCategories("9zddISUamJXZmh7SPDhw");
   }, []);
   return (
     <div className="w-full h-screen bg-black flex justify-center items-center">
-      <div className="w-[30%] bg-sky-300 text-center">
-        <label htmlFor="username">
-          Username:
-          <input
-            className="w-full h-full bg-white"
-            type="text"
-            name="username"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-        </label>
-        <label htmlFor="email">
-          Email:
-          <input
-            className="w-full h-full bg-white"
-            type="text"
-            name="email"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </label>
-        <label htmlFor="password">
-          Password:
-          <input
-            className="w-full h-full bg-white"
-            type="text"
-            name="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </label>
-        <label htmlFor="re-password">
-          Re-enter Password:
-          <input
-            className="w-full h-full bg-white"
-            type="text"
-            name="re-password"
-            value={rePassword}
-            onChange={(e) => {
-              setRePassword(e.target.value);
-            }}
-          />
-        </label>
+      <div className="w-[30%] bg-sky-300 flex flex-col">
+        <InputBox
+          header="Username"
+          id="username"
+          type="text"
+          value={name}
+          setValue={setName}
+        />
+
+        <InputBox
+          header="Email"
+          id="email"
+          type="text"
+          value={email}
+          setValue={setEmail}
+        />
+
+        <InputBox
+          header="Password"
+          id="password"
+          type="password"
+          value={password}
+          setValue={setPassword}
+        />
+
+        <InputBox
+          header="Re-enter Password"
+          id="re-password"
+          type="password"
+          value={rePassword}
+          setValue={setRePassword}
+        />
 
         <button
           className="hover:cursor-pointer"
           onClick={async () => {
-            const registRes = await RegisterHandler(
+            await RegisterHandler(
               name,
               email,
               password,
-              rePassword
+              rePassword,
+              navigator,
+              setName,
+              setEmail,
+              setPassword,
+              setRePassword
             );
-
-            if (registRes.success) {
-              Swal.fire({
-                title: "Create User successful!",
-                icon: "success",
-                draggable: true,
-                confirmButtonText: "Back to Login",
-              }).then(() => {
-                navigator("/login");
-              });
-
-              setName("");
-              setEmail("");
-              setPassword("");
-              setRePassword("");
-            }
           }}
         >
           Create User
+        </button>
+
+        <button
+          className="hover:cursor-pointer"
+          onClick={() => {
+            navigator("/login");
+          }}
+        >
+          go to Login
         </button>
       </div>
     </div>
