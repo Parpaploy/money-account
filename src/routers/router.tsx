@@ -1,22 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
-import RegisterPage from "../pages/register-page/register-page";
-import LoginPage from "../pages/login/login-page";
+import RegisterPage from "../pages/auth-page/components/register-page/register-page";
 import PrivateLayout from "../layouts/private-layout";
 import Homepage from "../pages/homepage/homepage";
 import PrivateLayoutNavbar from "../layouts/private-layout-navbar";
+import AuthPage from "../pages/auth-page/auth-page";
 
 export const router = createBrowserRouter([
   {
     path: "",
-    element: <LoginPage />,
+    element: <AuthPage />,
   },
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/auth",
+    element: <AuthPage />,
   },
   {
     path: "/private",

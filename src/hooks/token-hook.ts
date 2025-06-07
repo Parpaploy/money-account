@@ -9,7 +9,7 @@ export const useToken = () => {
       navigator(`/private/${username}/homepage`);
       return;
     }
-    navigator("/login");
+    navigator("/auth");
   };
 
   const AuthHandler = (
@@ -18,7 +18,7 @@ export const useToken = () => {
   ) => {
     const localToken = localStorage.getItem("token");
     if (!localToken) {
-      navigator("/login");
+      navigator("/auth");
       return;
     }
     setToken(localToken);
@@ -40,7 +40,7 @@ export const useToken = () => {
   const logOutCallBack = (navigator: (path: string) => void) => {
     localStorage.removeItem("token");
     localStorage.removeItem("username");
-    navigator("/login");
+    navigator("/auth");
   };
 
   return {

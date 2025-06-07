@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import {
   CheckRegisterUserExist,
   CreateUser,
-} from "../../global/api/firebase/auth/auth";
+} from "../../../../global/api/firebase/auth/auth";
 
 const emailPattern =
   /^[a-zA-Z0-9.!#$%&'+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/;
@@ -13,11 +13,11 @@ export const RegisterHandler = async (
   email: string,
   password: string,
   rePassword: string,
-  navigator: (path: string) => void,
   setNameInput: (input: string) => void,
   setEmailInput: (input: string) => void,
   setPasswordInput: (input: string) => void,
-  setRePasswordInput: (input: string) => void
+  setRePasswordInput: (input: string) => void,
+  setMenu: (menu: string) => void
 ): Promise<any> => {
   if (name && email && password && rePassword) {
     const { existName, existEmail } = await CheckRegisterUserExist(name, email);
@@ -80,13 +80,13 @@ export const RegisterHandler = async (
           title: "Create User successfully!",
           icon: "success",
           draggable: true,
-          confirmButtonText: "Back to Login",
+          confirmButtonText: "Back to Sign In",
         }).then(() => {
           setNameInput("");
           setEmailInput("");
           setPasswordInput("");
           setRePasswordInput("");
-          navigator("/login");
+          setMenu("signin");
         });
         return;
       }

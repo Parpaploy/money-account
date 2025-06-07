@@ -2,10 +2,12 @@ import type { IInputBox } from "../interfaces/component.inteface";
 
 export default function InputBox(props: IInputBox) {
   return (
-    <label htmlFor={props.id}>
-      {props.header}:
+    <div className="w-full">
+      <label className="font-bold text-md" htmlFor={props.id}>
+        {props.header}:
+      </label>
       <input
-        className="w-full h-full bg-white"
+        className="w-full px-2.5 py-1.5 bg-white rounded-md"
         type={props.type}
         name={props.id}
         value={props.value}
@@ -13,6 +15,6 @@ export default function InputBox(props: IInputBox) {
           props.setValue(e.target.value);
         }}
       />
-    </label>
+    </div>
   );
 }

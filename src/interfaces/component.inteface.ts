@@ -5,3 +5,10 @@ export interface IInputBox {
   value: string;
   setValue: (value: string) => void;
 }
+
+export interface IAuthMenuButton {
+  title: string;
+  menuText: string;
+  menu: string;
+  setMenu: (isSignIn: string) => void;
+}

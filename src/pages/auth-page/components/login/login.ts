@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { CheckLoginUserExist } from "../../global/api/firebase/auth/auth";
+import { CheckLoginUserExist } from "../../../../global/api/firebase/auth/auth";
 
 export const LoginHandler = async (
   identity: string,

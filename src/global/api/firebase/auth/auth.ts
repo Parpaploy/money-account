@@ -36,42 +36,47 @@ export const CreateUser = async (
     password: password,
   });
 
-  // Create new Doc in new Collection
-  const categoryDoc = doc(collection(newUser, "categories"));
-  // Create Document
-  await setDoc(categoryDoc, {
-    food: {
-      color: "#F4327F",
+  const categoriesRef = collection(newUser, "categories");
+
+  const defaultCategories = [
+    {
       id: "food",
       name: "อาหาร",
+      color: "#F4327F",
       priority: 1,
       usageLimit: 1500,
     },
-    utilities: {
-      color: "#AFD65C",
+    {
       id: "utilities",
       name: "ของใช้",
+      color: "#AFD65C",
       priority: 2,
       usageLimit: 2000,
     },
-    travel: {
-      color: "#45B9DA",
+    {
       id: "travel",
       name: "เดินทาง",
+      color: "#45B9DA",
       priority: 3,
       usageLimit: 500,
     },
-    fuel: {
-      color: "#FBA535",
+    {
       id: "fuel",
       name: "น้ำมัน",
+      color: "#FBA535",
       priority: 4,
       usageLimit: 500,
     },
-  });
+  ];
 
-  const expenseDoc = doc(collection(newUser, "expenses"));
-  await setDoc(expenseDoc, {});
+  for (const category of defaultCategories) {
+    const categoryDoc = doc(categoriesRef, category.id);
+    await setDoc(categoryDoc, category);
+  }
+
+  collection(newUser, "expenses");
+  // const expenseDoc = doc(expensesRef);
+  // await setDoc(expenseDoc, {});
 };
 
 export const CheckRegisterUserExist = async (
@@ -143,4 +148,17 @@ export const CheckLoginUserExist = async (
     username: userData.name,
     uid: userDoc.id,
   };
+};
+
+export const AddExpense = async (uid: string): Promise<any> => {
+  const expenseCollection = collection(
+    getFirestore(),
+    "users",
+    uid,
+    "expenses"
+  );
+
+  const expenseDoc = doc(expenseCollection);
+  await setDoc(expenseDoc, { title: "yo" });
+  console.log("Document set done");
 };
