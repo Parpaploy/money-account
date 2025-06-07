@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import RegisterPage from "./components/register-page/register-page";
 import AuthMenuButton from "./components/auth-menu-btn";
 import LoginPage from "./components/login/login-page";
+import RegisterPage from "./components/register-page/register-page";
 
 export default function AuthPage() {
   const [menu, setMenu] = useState<string>("signin");

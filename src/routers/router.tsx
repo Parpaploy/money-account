@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import RegisterPage from "../pages/auth-page/components/register-page/register-page";
 import PrivateLayout from "../layouts/private-layout";
 import Homepage from "../pages/homepage/homepage";
 import PrivateLayoutNavbar from "../layouts/private-layout-navbar";
