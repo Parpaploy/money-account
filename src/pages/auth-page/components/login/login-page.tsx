@@ -25,7 +25,7 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="flex flex-col rounded-xl gap-6 w-full">
+    <div className="flex flex-col rounded-xl gap-4 md:gap-6 w-full">
       <InputBox
         header="Username or Email"
         id="identity"
@@ -43,7 +43,7 @@ export default function LoginPage() {
       />
 
       <button
-        className="hover:cursor-pointer bg-[#F1B11F] rounded-lg py-3 font-bold mt-2"
+        className="hover:cursor-pointer bg-[#F1B11F] rounded-lg py-3 font-bold mt-1 md:mt-2"
         onClick={() => {
           LoginHandler(
             name,

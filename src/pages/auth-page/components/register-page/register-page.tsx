@@ -20,7 +20,7 @@ export default function RegisterPage({
     // GetCategories("9zddISUamJXZmh7SPDhw");
   }, []);
   return (
-    <div className="flex flex-col rounded-xl gap-2 w-full">
+    <div className="flex flex-col rounded-xl gap-1 md:gap-2 w-full">
       <InputBox
         header="Username"
         id="username"
@@ -54,7 +54,7 @@ export default function RegisterPage({
       />
 
       <button
-        className="hover:cursor-pointer bg-[#F1B11F] rounded-lg py-3 font-bold mt-5"
+        className="hover:cursor-pointer bg-[#F1B11F] rounded-lg py-3 font-bold mt-4 md:mt-5"
         onClick={async () => {
           await RegisterHandler(
             name,

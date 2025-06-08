@@ -10,7 +10,7 @@ export default function Homepage() {
     return <>No Found</>;
   }
   return (
-    <>
+    <div className="w-full h-[90svh] bg-[#EBE9E2]">
       Hello {username}
       <button
         onClick={() => {
@@ -21,6 +21,6 @@ export default function Homepage() {
       >
         Click to add Expense
       </button>
-    </>
+    </div>
   );
 }

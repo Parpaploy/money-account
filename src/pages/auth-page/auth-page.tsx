@@ -11,13 +11,13 @@ export default function AuthPage() {
     <>
       <div className="w-full h-screen bg-[#1E1E1E] flex justify-center items-center text-[#E53C12]">
         <div
-          className="bg-[#EBE9E2] rounded-xl flex flex-col justify-start items-center p-12 md:min-h-132 md:h-132 md:w-110 gap-5"
+          className="bg-[#EBE9E2] rounded-xl flex flex-col justify-start items-center p-8 md:p-12 min-h-107 md:min-h-132 md:h-132 md:w-110 w-[80%] gap-3 md:gap-5"
           style={{
             boxShadow:
               "rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px",
           }}
         >
-          <div className="flex border-2 border-[#E53C12] bg-[#dac3c3] rounded-md overflow-hidden text-[#F1B11F] text-2xl md:min-h-18 md:h-18 w-full">
+          <div className="flex border-2 border-[#E53C12] bg-[#dac3c3] rounded-md overflow-hidden text-[#F1B11F] md:text-2xl text-xl text-center md:min-h-18 md:h-18 w-full">
             <AuthMenuButton
               title="Sign In"
               menuText="signin"

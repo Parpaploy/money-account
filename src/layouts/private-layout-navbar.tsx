@@ -1,22 +1,20 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import PrivateNavbar from "../components/private-navbar";
-import { useEffect, useState } from "react";
-import { useToken } from "../hooks/token-hook";
+import PrivateSidebar from "../components/private-sidebar";
 
 export default function PrivateLayoutNavbar() {
-  const navigator = useNavigate();
-  const { AuthHandler } = useToken();
-
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    AuthHandler(navigator, setToken);
-  }, [token]);
-
   return (
-    <>
-      <PrivateNavbar />
-      <Outlet />
-    </>
+    <div className="h-screen flex flex-col">
+      <div className="w-full">
+        <PrivateNavbar />
+      </div>
+
+      <div className="flex overflow-hidden">
+        <PrivateSidebar />
+        <main className="flex-1 overflow-y-auto bg-gray-100">
+          <Outlet />
+        </main>
+      </div>
+    </div>
   );
 }
