@@ -8,6 +8,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { defaultCategorie } from "../../../../constants/categories";
 
 // export const GetUsers = async (): Promise<any[]> => {
 //   const usersCollection = collection(getFirestore(), "users");
@@ -38,38 +39,7 @@ export const CreateUser = async (
 
   const categoriesRef = collection(newUser, "categories");
 
-  const defaultCategories = [
-    {
-      id: "food",
-      name: "อาหาร",
-      color: "#F4327F",
-      priority: 1,
-      usageLimit: 1500,
-    },
-    {
-      id: "utilities",
-      name: "ของใช้",
-      color: "#AFD65C",
-      priority: 2,
-      usageLimit: 2000,
-    },
-    {
-      id: "travel",
-      name: "เดินทาง",
-      color: "#45B9DA",
-      priority: 3,
-      usageLimit: 500,
-    },
-    {
-      id: "fuel",
-      name: "น้ำมัน",
-      color: "#FBA535",
-      priority: 4,
-      usageLimit: 500,
-    },
-  ];
-
-  for (const category of defaultCategories) {
+  for (const category of defaultCategorie) {
     const categoryDoc = doc(categoriesRef, category.id);
     await setDoc(categoryDoc, category);
   }
@@ -148,17 +118,4 @@ export const CheckLoginUserExist = async (
     username: userData.name,
     uid: userDoc.id,
   };
-};
-
-export const AddExpense = async (uid: string): Promise<any> => {
-  const expenseCollection = collection(
-    getFirestore(),
-    "users",
-    uid,
-    "expenses"
-  );
-
-  const expenseDoc = doc(expenseCollection);
-  await setDoc(expenseDoc, { title: "yo" });
-  console.log("Document set done");
 };

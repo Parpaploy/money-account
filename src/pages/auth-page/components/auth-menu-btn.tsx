@@ -1,13 +1,14 @@
-import type { IAuthMenuButton } from "../../../interfaces/component.inteface";
+import type { IAuthMenuButton } from "../../../interfaces/component.interface";
 
 export default function AuthMenuButton(props: IAuthMenuButton) {
   return (
     <button
       className={`${
         props.menu === props.menuText
-          ? "bg-[#E53C12] text-[#F1B11F]"
-          : "bg-[#dac3c3] text-[#de8068]"
-      } rounded-sm overflow-hidden md:px-10 md:py-3 py-2 text-center cursor-pointer w-full whitespace-nowrap font-md`}
+          ? "bg-[#F86D6E] text-[#F7EAA0]"
+          : "bg-[#f5f0d3] hover:bg-[#f7caca] text-[#f9b6b6] hover:text-[#f5f0d3]"
+      } 
+        overflow-hidden md:px-10 md:py-3 py-2 text-center cursor-pointer w-full whitespace-nowrap font-md`}
       onClick={() => {
         props.setMenu(props.menuText);
       }}

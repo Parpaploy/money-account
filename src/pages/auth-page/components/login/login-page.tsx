@@ -32,6 +32,10 @@ export default function LoginPage() {
         type="text"
         value={name}
         setValue={setName}
+        font="medium"
+        textSize="lg"
+        px="2.5"
+        py="1"
       />
 
       <InputBox
@@ -40,10 +44,17 @@ export default function LoginPage() {
         type="password"
         value={password}
         setValue={setPassword}
+        font="medium"
+        textSize="lg"
+        px="2.5"
+        py="1"
       />
 
       <button
-        className="hover:cursor-pointer bg-[#F1B11F] rounded-lg py-3 font-bold mt-1 md:mt-2"
+        className="hover:cursor-pointer bg-[#F7EAA0] hover:bg-[#f0e398] rounded-lg py-3 font-bold mt-1 md:mt-2"
+        style={{
+          boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+        }}
         onClick={() => {
           LoginHandler(
             name,

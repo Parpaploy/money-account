@@ -4,6 +4,10 @@ export interface IInputBox {
   type: string;
   value: string;
   setValue: (value: string) => void;
+  font: string;
+  textSize: string;
+  px: string;
+  py: string;
 }
 
 export interface IAuthMenuButton {
@@ -11,4 +15,10 @@ export interface IAuthMenuButton {
   menuText: string;
   menu: string;
   setMenu: (isSignIn: string) => void;
+}
+
+export interface ISidebarButton {
+  path: string;
+  username: string;
+  title: string;
 }

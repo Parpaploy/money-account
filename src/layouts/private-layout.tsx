@@ -5,21 +5,20 @@ import { useToken } from "../hooks/token-hook";
 export default function PrivateLayout() {
   const navigator = useNavigate();
 
-  const { fetchToken, getLocalToken, getLocalUsername, AuthHandler } =
-    useToken();
+  const { AuthHandler } = useToken();
 
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     AuthHandler(navigator, setToken);
-  }, [token]);
-
-  useEffect(() => {
-    getLocalToken();
-    const tusername = getLocalUsername();
-
-    fetchToken(navigator, tusername as string);
   }, []);
+
+  // useEffect(() => {
+  //   getLocalToken();
+  //   const tusername = getLocalUsername();
+
+  //   fetchToken(navigator, tusername as string, "");
+  // }, []);
 
   return <Outlet />;
 }

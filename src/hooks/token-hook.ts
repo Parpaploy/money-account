@@ -4,9 +4,15 @@ export const useToken = () => {
     return localtoken;
   };
 
-  const fetchToken = (navigator: (path: string) => void, username: string) => {
+  const fetchToken = (
+    navigator: (path: string) => void,
+    username: string,
+    pagePath: string = ""
+  ) => {
     if (localStorage.getItem("token")) {
-      navigator(`/private/${username}/homepage`);
+      navigator(
+        pagePath ? `/private/${username}/${pagePath}` : `/private/${username}/`
+      );
       return;
     }
     navigator("/auth");
@@ -17,6 +23,7 @@ export const useToken = () => {
     setToken: (token: string) => void
   ) => {
     const localToken = localStorage.getItem("token");
+
     if (!localToken) {
       navigator("/auth");
       return;

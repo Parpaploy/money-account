@@ -8,10 +8,12 @@ export const GetCategories = async (uid: string): Promise<any> => {
     "categories"
   );
 
-  const categories = await getDocs(categoryCollection);
+  const categorySnapshot = await getDocs(categoryCollection);
 
-  console.log(
-    categories.docs.map((category) => category.data()),
-    "category"
-  );
+  const categories = categorySnapshot.docs.map((category) => ({
+    id: category.id,
+    ...category.data(),
+  }));
+
+  return categories;
 };

@@ -28,7 +28,7 @@ export const LoginHandler = async (
           }
           setIdentityInput("");
           setPasswordInput("");
-          navigator(`/private/${username}/homepage`);
+          navigator(`/private/${username}/`);
         });
       } else {
         Swal.fire({
