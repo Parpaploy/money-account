@@ -17,7 +17,7 @@ export default function DashboardPage() {
   }, []);
 
   if (!username) {
-    return <>Not Found</>;
+    return <>Loading...</>;
   }
   return (
     <div className="w-full h-[90svh] bg-[#fef6ea] overflow-y-auto">

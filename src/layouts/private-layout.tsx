@@ -20,5 +20,9 @@ export default function PrivateLayout() {
   //   fetchToken(navigator, tusername as string, "");
   // }, []);
 
+  if (token === null) {
+    return <>Loading...</>;
+  }
+
   return <Outlet />;
 }
