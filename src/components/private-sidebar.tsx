@@ -17,7 +17,7 @@ export default function PrivateSidebar({
   const navigator = useNavigate();
 
   return isPopup ? (
-    <div className="flex flex-col gap-5 w-full h-[92svh] min-h-[92svh] overflow-y-auto bg-[#A9D0E7] px-10 py-7 justify-between">
+    <div className="flex flex-col gap-5 w-full h-[92svh] min-h-[92svh] overflow-y-auto bg-[#A9D0E7] px-10 py-7 justify-start">
       <div className="flex flex-col gap-5">
         <SidebarButton
           path=""
@@ -40,33 +40,32 @@ export default function PrivateSidebar({
           isMobile={true}
           setIsPopup={setIsPopup}
         />
+        {/* Logout Button */}
+        <button
+          className="hover:cursor-pointer bg-[#2B3E89] hover:bg-[#233370] rounded-lg py-3 text-3xl font-[500] mt-1 md:mt-2 text-white hover:text-[#d9d9e0]"
+          style={{
+            boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+          }}
+          onClick={() => {
+            Swal.fire({
+              title: "Are you sure to Logout?",
+              showConfirmButton: false,
+              showDenyButton: true,
+              showCancelButton: true,
+              denyButtonText: `Yes, sure`,
+            }).then((result) => {
+              if (result.isDenied) {
+                logOutCallBack(navigator);
+              }
+            });
+          }}
+        >
+          Logout
+        </button>
       </div>
-
-      {/* Logout Button */}
-      <button
-        className="hover:cursor-pointer bg-[#2B3E89] hover:bg-[#233370] rounded-lg py-10 text-3xl font-[500] mt-1 md:mt-2 text-white hover:text-[#d9d9e0]"
-        style={{
-          boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
-        }}
-        onClick={() => {
-          Swal.fire({
-            title: "Are you sure to Logout?",
-            showConfirmButton: false,
-            showDenyButton: true,
-            showCancelButton: true,
-            denyButtonText: `Yes, sure`,
-          }).then((result) => {
-            if (result.isDenied) {
-              logOutCallBack(navigator);
-            }
-          });
-        }}
-      >
-        Logout
-      </button>
     </div>
   ) : (
-    <div className="hidden lg:flex lg:w-[35svh] h-[90svh] bg-[#A9D0E7] px-5 py-3 flex-col gap-3">
+    <div className="hidden lg:flex lg:w-[35svh] h-[90svh] bg-[#A9D0E7] 2xl:px-10 2xl:py-18 px-7 py-6 flex-col gap-3">
       <SidebarButton
         path=""
         username={username as string}

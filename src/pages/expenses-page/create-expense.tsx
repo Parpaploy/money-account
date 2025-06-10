@@ -48,7 +48,7 @@ export default function CreateExpensePage() {
   }, [categories]);
 
   return (
-    <div className="w-full lg:h-[90svh] h-[92svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 lg:py-8 px-7 py-6">
+    <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 md:px-10 py-8 px-7">
       <div className="flex lg:flex-row flex-col 2xl:gap-5 md:gap-7 gap-5 2xl:mb-10 md:mb-7 mb-5">
         <h1 className="lg:hidden text-[#fd8b8b] font-bold md:text-3xl text-2xl">
           New Expense
@@ -107,7 +107,7 @@ export default function CreateExpensePage() {
           />
 
           <div
-            className="absolute bg-[#ffaaaa] text-[#fff6c0] text-xl lg:w-8 lg:h-8 text-center rounded-full lg:right-4 lg:top-5 top-3 right-3 hover:cursor-pointer flex items-center justify-center"
+            className="absolute bg-[#ffaaaa] text-[#fff6c0] text-xl lg:w-8 lg:h-8 w-8 h-8 text-center rounded-full lg:right-4 lg:top-5 md:top-4 md:right-4 top-2 right-3 hover:cursor-pointer flex items-center justify-center"
             onClick={() => inputRef.current?.showPicker?.()}
           >
             <LuCalendar1 />

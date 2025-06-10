@@ -20,7 +20,7 @@ export default function DashboardPage() {
     return <>Not Found</>;
   }
   return (
-    <div className="w-full lg:h-[90svh] h-[92svh] bg-[#fef6ea] overflow-y-auto">
+    <div className="w-full h-[90svh] bg-[#fef6ea] overflow-y-auto">
       <button
         onClick={() => {
           GetCategories(uid as string);

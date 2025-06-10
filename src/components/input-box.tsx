@@ -9,7 +9,7 @@ export default function InputBox(props: IInputBox) {
         {props.header}:
       </label>
       <input
-        className={`w-full px-${props.px} py-1 md:py-${props.py} bg-white rounded-md`}
+        className={`w-full md:px-${props.px} px-2 py-1 md:py-${props.py} bg-white rounded-md`}
         type={props.type}
         name={props.id}
         value={props.value}
