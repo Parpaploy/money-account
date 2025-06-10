@@ -66,6 +66,9 @@ export default function CreateExpensePage() {
               setExpenseCategory(e.target.value);
             }}
             required
+            style={{
+              boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+            }}
           >
             {categories.map((category) => {
               return (
@@ -90,6 +93,9 @@ export default function CreateExpensePage() {
               setExpenseType(e.target.value);
             }}
             required
+            style={{
+              boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+            }}
           >
             <option value="outcome">Outcome</option>;
             <option value="income">Income</option>;
@@ -104,6 +110,9 @@ export default function CreateExpensePage() {
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
             required
+            style={{
+              boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+            }}
           />
 
           <div

@@ -49,6 +49,9 @@ export default function CreateCategoryPage() {
                   setPriority(e.target.value);
                 }}
                 required
+                style={{
+                  boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+                }}
               >
                 {Array.from({ length: 10 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -62,7 +65,10 @@ export default function CreateCategoryPage() {
               <label
                 htmlFor="color"
                 className="lg:w-15 lg:h-15 md:w-12 w-9 h-20 border-2 border-[#fff6c0] rounded-full cursor-pointer flex items-center justify-center"
-                style={{ backgroundColor: color }}
+                style={{
+                  boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
+                  backgroundColor: color,
+                }}
               ></label>
               <input
                 type="color"

@@ -30,7 +30,7 @@ export default function PrivateNavbar({
       </button>
 
       <button
-        className={`lg:hidden md:w-14 md:h-14 w-9 h-9 text-center hover:cursor-pointer text-lg md:text-3xl ${
+        className={`lg:hidden md:w-12 md:h-12 w-9 h-9 text-center hover:cursor-pointer text-lg md:text-2xl ${
           isPopup
             ? "bg-[#A9D0E7] text-[#F7EAA0]"
             : "bg-[#F7EAA0] text-[#fd8b8b]"
