@@ -8,6 +8,7 @@ export interface IInputBox {
   textSize: string;
   px: string;
   py: string;
+  isRequire: boolean;
 }
 
 export interface IAuthMenuButton {

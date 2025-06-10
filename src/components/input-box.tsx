@@ -16,6 +16,7 @@ export default function InputBox(props: IInputBox) {
         onChange={(e) => {
           props.setValue(e.target.value);
         }}
+        required={props.isRequire}
       />
     </div>
   );

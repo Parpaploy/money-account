@@ -1,4 +1,5 @@
 import {
+  addDoc,
   collection,
   doc,
   getDocs,
@@ -40,7 +41,19 @@ export const CreateExpense = async (
     "expenses"
   );
 
+  console.log("create new expense to user:", uid);
+  console.log({
+    amount,
+    category,
+    expenseType,
+    description,
+    merchant,
+    subject,
+    dateTime,
+  });
+
   const expenseDoc = doc(expenseCollection);
+
   await setDoc(expenseDoc, {
     amount: amount,
     amountNumber: Number(amount),

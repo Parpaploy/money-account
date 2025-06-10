@@ -36,6 +36,7 @@ export default function LoginPage() {
         textSize="lg"
         px="2.5"
         py="1"
+        isRequire={true}
       />
 
       <InputBox
@@ -48,6 +49,7 @@ export default function LoginPage() {
         textSize="lg"
         px="2.5"
         py="1"
+        isRequire={true}
       />
 
       <button
