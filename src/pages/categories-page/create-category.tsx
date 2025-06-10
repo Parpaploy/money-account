@@ -29,7 +29,7 @@ export default function CreateCategoryPage() {
   }, []);
 
   return (
-    <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 md:px-10 md:py-8">
+    <div className="w-full lg:h-[90svh] h-[92svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 lg:py-8 px-7 py-6">
       <div className="flex flex-col rounded-xl 2xl:gap-5 md:gap-3 w-full text-[#ffaaaa] text-2xl">
         <div className="flex gap-10 justify-center items-center">
           <div className="flex flex-col gap-2 justify-center items-center w-36 md:p-5 rounded-3xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
@@ -104,7 +104,7 @@ export default function CreateCategoryPage() {
 
       <div className="w-full flex justify-center 2xl:mt-10 md:mt-5">
         <button
-          className="w-[50%] hover:cursor-pointer bg-[#fd8b8b] hover:bg-[#f08484] rounded-lg py-5 text-3xl font-[500] text-[#fff6c0] hover:text-[#f4ecb8] mt-1 md:mt-2"
+          className="w-[50%] hover:cursor-pointer bg-[#fd8b8b] hover:bg-[#f08484] rounded-lg lg:py-5 md:py-3 py-2 lg:text-3xl text-xl font-[500] text-[#fff6c0] hover:text-[#f4ecb8] mt-1 md:mt-2"
           style={{
             boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
           }}

@@ -11,6 +11,9 @@ export default function SidebarButton(props: ISidebarButton) {
     <button
       onClick={() => {
         navigator(targetPath);
+        if (props.isMobile) {
+          props.setIsPopup(false);
+        }
       }}
       className={`w-full hover:cursor-pointer ${
         currentPath.pathname === targetPath

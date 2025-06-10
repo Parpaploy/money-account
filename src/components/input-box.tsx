@@ -4,7 +4,7 @@ export default function InputBox(props: IInputBox) {
   return (
     <div className="w-full h-full">
       <label
-        className={`font-${props.font} md:text-${props.textSize} text-sm" htmlFor=${props.id}`}
+        className={`font-${props.font} 2xl:text-${props.textSize} lg:text-xl md:text-xl text-xl" htmlFor=${props.id}`}
       >
         {props.header}:
       </label>

@@ -48,10 +48,15 @@ export default function CreateExpensePage() {
   }, [categories]);
 
   return (
-    <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 md:px-10 md:py-8">
-      <div className="flex gap-5 2xl:mb-10 md:mb-5">
-        <div className="w-full md:p-5 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
-          <label htmlFor="Category">Category:</label>
+    <div className="w-full lg:h-[90svh] h-[92svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 lg:py-8 px-7 py-6">
+      <div className="flex lg:flex-row flex-col 2xl:gap-5 md:gap-7 gap-5 2xl:mb-10 md:mb-7 mb-5">
+        <h1 className="lg:hidden text-[#fd8b8b] font-bold md:text-3xl text-2xl">
+          New Expense
+        </h1>
+        <div className="w-full md:p-5 p-3 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
+          <label className="md:text-xl text-md" htmlFor="Category">
+            Category:
+          </label>
           <select
             className="bg-[#fff6c0] text-[#ffaaaa] font-bold p-1 rounded-3xl ml-2 hover:cursor-pointer"
             id="category"
@@ -72,8 +77,10 @@ export default function CreateExpensePage() {
           </select>
         </div>
 
-        <div className="w-full p-5 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
-          <label htmlFor="ExpenseType">Expense Type:</label>
+        <div className="w-full md:p-5 p-3 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
+          <label className="md:text-xl text-md" htmlFor="ExpenseType">
+            Expense Type:
+          </label>
           <select
             className="bg-[#fff6c0] text-[#ffaaaa] font-bold p-1 rounded-3xl ml-2 hover:cursor-pointer"
             id="expensetype"
@@ -92,7 +99,7 @@ export default function CreateExpensePage() {
         <div className="relative w-full">
           <input
             ref={inputRef}
-            className="w-full h-full p-5 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]"
+            className="md:text-xl text-md w-full h-full md:p-5 p-3 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]"
             type="datetime-local"
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
@@ -100,7 +107,7 @@ export default function CreateExpensePage() {
           />
 
           <div
-            className="absolute bg-[#ffaaaa] text-[#fff6c0] text-xl w-8 h-8 text-center rounded-full md:right-4 md:top-5 hover:cursor-pointer flex items-center justify-center"
+            className="absolute bg-[#ffaaaa] text-[#fff6c0] text-xl lg:w-8 lg:h-8 text-center rounded-full lg:right-4 lg:top-5 top-3 right-3 hover:cursor-pointer flex items-center justify-center"
             onClick={() => inputRef.current?.showPicker?.()}
           >
             <LuCalendar1 />
@@ -108,7 +115,7 @@ export default function CreateExpensePage() {
         </div>
       </div>
 
-      <div className="flex flex-col rounded-xl 2xl:gap-5 md:gap-3 w-full text-[#ffaaaa] text-2xl">
+      <div className="flex flex-col rounded-xl 2xl:gap-5 lg:gap-3 md:gap-5 gap-4 w-full text-[#ffaaaa] lg:text-2xl text-lg">
         <div className="flex flex-col gap-1">
           <InputBox
             header="Amount"
@@ -122,7 +129,9 @@ export default function CreateExpensePage() {
             py="3"
             isRequire={true}
           />
-          <p className="text-end text-sm">Please fill number only</p>
+          <p className="text-end lg:text-sm md:text-lg text-sm">
+            Please fill number only
+          </p>
         </div>
 
         <InputBox
@@ -163,9 +172,9 @@ export default function CreateExpensePage() {
         />
       </div>
 
-      <div className="w-full flex justify-center 2xl:mt-10 md:mt-5">
+      <div className="w-full flex justify-center 2xl:mt-10 lg:mt-5 mt-7">
         <button
-          className="w-[50%] hover:cursor-pointer bg-[#fd8b8b] hover:bg-[#f08484] rounded-lg py-5 text-3xl font-[500] text-[#fff6c0] hover:text-[#f4ecb8] mt-1 md:mt-2"
+          className="w-[50%] hover:cursor-pointer bg-[#fd8b8b] hover:bg-[#f08484] rounded-lg lg:py-5 md:py-3 py-2 lg:text-3xl text-xl font-[500] text-[#fff6c0] hover:text-[#f4ecb8] mt-1 md:mt-2"
           style={{
             boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
           }}

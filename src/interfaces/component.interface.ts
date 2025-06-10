@@ -22,4 +22,6 @@ export interface ISidebarButton {
   path: string;
   username: string;
   title: string;
+  isMobile: boolean;
+  setIsPopup: (isPopup: boolean) => void;
 }
