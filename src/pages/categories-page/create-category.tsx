@@ -3,16 +3,20 @@ import { useToken } from "../../hooks/token-hook";
 import InputBox from "../../components/input-box";
 import { CreateCategoryHandler } from "./categories";
 import { GetCategories } from "../../global/api/firebase/service/categories/categories";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateCategoryPage() {
-  const { getLocalToken } = useToken();
+  const { getLocalToken, getLocalUsername } = useToken();
 
   const uid = getLocalToken();
+  const username = getLocalUsername();
+
+  const navigate = useNavigate();
 
   const [id, setId] = useState<string>("");
   const [categoryId, setCategoryId] = useState<string>("");
   const [color, setColor] = useState<string>("#A9D0E7");
-  const [priority, setPriority] = useState<string>("");
+  const [priority, setPriority] = useState<string>("1");
   const [usageLimit, setUsageLimit] = useState<string>("");
 
   useEffect(() => {
@@ -23,7 +27,7 @@ export default function CreateCategoryPage() {
       await GetCategories(uid as string);
       setCategoryId("");
       setColor("#A9D0E7");
-      setPriority("");
+      setPriority("1");
       setUsageLimit("");
     })();
   }, []);
@@ -127,7 +131,13 @@ export default function CreateCategoryPage() {
               categoryId,
               color,
               Number(priority),
-              Number(usageLimit)
+              Number(usageLimit),
+              navigate,
+              username as string,
+              setCategoryId,
+              setColor,
+              setPriority,
+              setUsageLimit
             );
           }}
         >

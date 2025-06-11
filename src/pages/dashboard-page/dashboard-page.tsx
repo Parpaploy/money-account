@@ -20,7 +20,7 @@ export default function DashboardPage() {
     return <>Loading...</>;
   }
   return (
-    <div className="w-full h-[90svh] bg-[#fef6ea] overflow-y-auto">
+    <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 md:px-10 py-8 px-7">
       <button
         onClick={() => {
           GetCategories(uid as string);

@@ -7,20 +7,25 @@ import {
 } from "firebase/firestore";
 
 export const GetExpenses = async (uid: string) => {
-  const expenseCollection = collection(
-    getFirestore(),
-    "users",
-    uid,
-    "expenses"
-  );
+  try {
+    const expenseCollection = collection(
+      getFirestore(),
+      "users",
+      uid,
+      "expenses"
+    );
 
-  const expensesSnapshot = await getDocs(expenseCollection);
-  const expenses = expensesSnapshot.docs.map((expense) => ({
-    id: expense.id,
-    ...expense.data(),
-  }));
+    const expensesSnapshot = await getDocs(expenseCollection);
+    const expenses = expensesSnapshot.docs.map((expense) => ({
+      id: expense.id,
+      ...expense.data(),
+    }));
 
-  return expenses;
+    return expenses;
+  } catch (error) {
+    console.error("Error fetching expenses:", error);
+    return [];
+  }
 };
 
 export const CreateExpense = async (
@@ -32,35 +37,29 @@ export const CreateExpense = async (
   merchant: string,
   subject: string,
   dateTime: string
-): Promise<any> => {
-  const expenseCollection = collection(
-    getFirestore(),
-    "users",
-    uid,
-    "expenses"
-  );
+): Promise<void> => {
+  try {
+    const expenseCollection = collection(
+      getFirestore(),
+      "users",
+      uid,
+      "expenses"
+    );
 
-  console.log("create new expense to user:", uid);
-  console.log({
-    amount,
-    category,
-    expenseType,
-    description,
-    merchant,
-    subject,
-    dateTime,
-  });
+    const expenseDoc = doc(expenseCollection);
 
-  const expenseDoc = doc(expenseCollection);
-
-  await setDoc(expenseDoc, {
-    amount: amount,
-    amountNumber: Number(amount),
-    category: category,
-    expenseType: expenseType,
-    description: description,
-    merchant: merchant,
-    subject: subject,
-    dateTime: dateTime,
-  });
+    await setDoc(expenseDoc, {
+      amount: amount,
+      amountNumber: Number(amount),
+      category: category,
+      expenseType: expenseType,
+      description: description,
+      merchant: merchant,
+      subject: subject,
+      dateTime: dateTime,
+    });
+  } catch (error) {
+    console.error("Error creating expense:", error);
+    throw error;
+  }
 };

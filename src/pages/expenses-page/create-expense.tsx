@@ -5,14 +5,17 @@ import { useToken } from "../../hooks/token-hook";
 import { useData } from "../../hooks/data-hook";
 import type { ICategoryData } from "../../interfaces/data.interface";
 import { LuCalendar1 } from "react-icons/lu";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateExpensePage() {
-  const { getLocalToken } = useToken();
+  const { getLocalToken, getLocalUsername } = useToken();
   const { fetchCategories } = useData();
+  const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const uid = getLocalToken();
+  const username = getLocalUsername();
 
   const [id, setId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
@@ -196,7 +199,17 @@ export default function CreateExpensePage() {
               description,
               merchant,
               subject,
-              dateTime
+              dateTime,
+              navigate,
+              username as string,
+              setAmount,
+              setExpenseCategory,
+              setExpenseType,
+              setDescription,
+              setMerchant,
+              setSubject,
+              setDateTime,
+              categories[0].id
             );
           }}
         >
