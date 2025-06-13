@@ -8,26 +8,28 @@ export const useData = () => {
   const { getLocalToken } = useToken();
   const uid = getLocalToken();
 
-  const fetchCategories = async (setCategories: (res: any) => void) => {
-    const res = await GetCategories(uid as string);
-    setCategories(res);
-  };
-
-  const fetchExpenses = async (setExpenses: (rees: any) => void) => {
-    const res = await GetExpenses(uid as string);
-    setExpenses(res);
-  };
+  const [categories, setCategories] = useState<ICategoryData[]>([]);
+  const [expenses, setExpenses] = useState<IExpenseData[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
-      await fetchCategories(setCategories);
-      await fetchExpenses(setExpenses);
+      if (!uid) return;
+      const categoriesRes = await GetCategories(uid);
+      const expensesRes: IExpenseData[] = await GetExpenses(uid);
+      setCategories(
+        categoriesRes.sort(
+          (a: ICategoryData, b: ICategoryData) => a.priority - b.priority
+        )
+      );
+      setExpenses(expensesRes);
+      setLoading(false);
     })();
-  }, []);
+  }, [uid]);
 
-  const [categories, setCategories] = useState<ICategoryData[]>([]);
-
-  const [expenses, setExpenses] = useState<IExpenseData[]>([]);
+  const expenseByCategory = categories.map((category) => {
+    return expenses.filter((exp) => exp.category === category.id);
+  });
 
   const expenseByCategoryIncome = categories.map((category) => {
     return expenses
@@ -45,10 +47,31 @@ export const useData = () => {
       .reduce((sum, exp) => sum + exp.amountNumber, 0);
   });
 
+  const loadData = async () => {
+    if (!uid) return;
+    setLoading(true);
+    const categoriesRes = await GetCategories(uid);
+    const expensesRes = await GetExpenses(uid);
+    setCategories(
+      categoriesRes.sort(
+        (a: ICategoryData, b: ICategoryData) => a.priority - b.priority
+      )
+    );
+    setExpenses(expensesRes);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    loadData();
+  }, [uid]);
+
   return {
-    fetchCategories,
-    fetchExpenses,
+    loading,
+    categories,
+    expenses,
+    expenseByCategory,
     expenseByCategoryIncome,
     expenseByCategoryOutcome,
+    loadData,
   };
 };

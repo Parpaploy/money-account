@@ -3,13 +3,12 @@ import InputBox from "../../components/input-box";
 import { CreateExpenseHandler } from "./expenses";
 import { useToken } from "../../hooks/token-hook";
 import { useData } from "../../hooks/data-hook";
-import type { ICategoryData } from "../../interfaces/data.interface";
 import { LuCalendar1 } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateExpensePage() {
   const { getLocalToken, getLocalUsername } = useToken();
-  const { fetchCategories } = useData();
+  const { categories } = useData();
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -28,14 +27,6 @@ export default function CreateExpensePage() {
 
   useEffect(() => {
     if (uid) setId(uid);
-  }, []);
-
-  const [categories, setCategories] = useState<ICategoryData[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      await fetchCategories(setCategories);
-    })();
   }, []);
 
   useEffect(() => {

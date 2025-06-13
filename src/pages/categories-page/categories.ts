@@ -1,5 +1,8 @@
 import Swal from "sweetalert2";
-import { CreateCategory } from "../../global/api/firebase/service/categories/categories";
+import {
+  CreateCategory,
+  EditCategories,
+} from "../../global/api/firebase/service/categories/categories";
 
 export const CreateCategoryHandler = async (
   uid: string,
@@ -15,7 +18,7 @@ export const CreateCategoryHandler = async (
   setUsageLimit: (input: string) => void
 ) => {
   if (id && color && priority && usageLimit) {
-    CreateCategory(uid, id, color, priority, usageLimit);
+    await CreateCategory(uid, id, color, priority, usageLimit);
 
     Swal.fire({
       title: "Add Category successfully!",
@@ -29,6 +32,45 @@ export const CreateCategoryHandler = async (
       setUsageLimit("");
 
       navigator(`/private/${username}/`);
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Please provide the properly data",
+      confirmButtonText: "Ok",
+    });
+  }
+};
+
+export const EditCategoryHandler = async (
+  uid: string,
+  id: string,
+  color: string,
+  priority: number,
+  usageLimit: number,
+  setCategoryId: (input: string) => void,
+  setColor: (input: string) => void,
+  setPriority: (input: string) => void,
+  setUsageLimit: (input: string) => void,
+  setIsPopup: (isPopup: boolean) => void,
+  reloadCategories: () => void
+): Promise<any> => {
+  if (id && color && priority && usageLimit) {
+    await EditCategories(uid, id, color, priority, usageLimit);
+
+    Swal.fire({
+      title: "Edit Category successfully!",
+      icon: "success",
+      draggable: true,
+      confirmButtonText: "Continue",
+    }).then(() => {
+      setCategoryId(id);
+      setColor(color);
+      setPriority(String(priority));
+      setUsageLimit(String(usageLimit));
+
+      setIsPopup(false);
+      reloadCategories();
     });
   } else {
     Swal.fire({

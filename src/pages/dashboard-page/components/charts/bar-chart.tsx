@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -10,7 +9,6 @@ import {
   Legend,
 } from "chart.js";
 import { useData } from "../../../../hooks/data-hook";
-import type { ICategoryData } from "../../../../interfaces/data.interface";
 
 ChartJS.register(
   CategoryScale,
@@ -21,71 +19,81 @@ ChartJS.register(
   Legend
 );
 export default function BarChart({ type, data }: { type: string; data: any }) {
-  const { fetchCategories } = useData();
-
-  const [categories, setCategories] = useState<ICategoryData[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      await fetchCategories(setCategories);
-    })();
-  }, []);
+  const { categories } = useData();
 
   return (
-    <div className="w-full h-full">
-      <Bar
-        data={{
-          labels: categories.map((category) => category.id),
-          datasets: [
-            {
-              label: type,
-              data: data,
-              backgroundColor: categories.map((category) => category.color),
-            },
-          ],
-        }}
-        options={{
-          responsive: true,
-          plugins: {
-            title: {
-              display: true,
-              text: type === "income" ? "Income" : "Outcome",
-              align: "start",
-              position: "top",
-              color: "#242E68",
-              font: {
-                size: 32,
-                weight: "bold",
+    <div
+      className="w-full h-full rounded-3xl px-7 py-3"
+      style={{
+        boxShadow:
+          "rgba(17, 17, 26, 0.05) 3px 3px 6px 0px inset,rgba(17, 17, 26, 0.05) -3px -3px 6px 1px inset",
+      }}
+    >
+      {data.some((value: number) => value > 0) && data.length > 0 ? (
+        <Bar
+          data={{
+            labels: categories.map((category) => category.id),
+            datasets: [
+              {
+                label: type,
+                data: data,
+                backgroundColor: categories.map((category) => category.color),
               },
-            },
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              bodyFont: {
-                size: 13,
+            ],
+          }}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              title: {
+                display: true,
+                text: type === "income" ? "Income" : "Outcome",
+                align: "start",
+                position: "top",
+                color: "#242E68",
+                font: {
+                  size: 32,
+                  weight: "bold",
+                },
               },
-              titleFont: {
-                size: 14,
-              },
-            },
-          },
-          scales: {
-            x: {
-              grid: {
+              legend: {
                 display: false,
               },
-            },
-            y: {
-              beginAtZero: true,
-              grid: {
-                color: "#cccccc",
-                lineWidth: 1,
+              tooltip: {
+                bodyFont: {
+                  size: 13,
+                },
+                titleFont: {
+                  size: 14,
+                },
               },
             },
-          },
-        }}
-      />
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                },
+              },
+              y: {
+                beginAtZero: true,
+                grid: {
+                  color: "#cccccc",
+                  lineWidth: 1,
+                },
+              },
+            },
+          }}
+        />
+      ) : (
+        <div className="w-full h-full">
+          <div className="text-[#242E68] font-bold text-[32px]">
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </div>
+          <div className="w-full h-[80%] flex justify-center items-center font-bold text-xl">
+            No data
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,8 +5,9 @@ import {
   getFirestore,
   setDoc,
 } from "firebase/firestore";
+import type { IExpenseData } from "../../../../../interfaces/data.interface";
 
-export const GetExpenses = async (uid: string) => {
+export const GetExpenses = async (uid: string): Promise<IExpenseData[]> => {
   try {
     const expenseCollection = collection(
       getFirestore(),
@@ -16,10 +17,21 @@ export const GetExpenses = async (uid: string) => {
     );
 
     const expensesSnapshot = await getDocs(expenseCollection);
-    const expenses = expensesSnapshot.docs.map((expense) => ({
-      id: expense.id,
-      ...expense.data(),
-    }));
+
+    const expenses: IExpenseData[] = expensesSnapshot.docs.map((expense) => {
+      const data = expense.data();
+      return {
+        id: expense.id,
+        amount: data.amount ?? "",
+        amountNumber: data.amountNumber ?? 0,
+        category: data.category ?? "",
+        dateTime: data.dateTime ?? "",
+        description: data.description ?? "",
+        expenseType: data.expenseType ?? "",
+        merchant: data.merchant ?? "",
+        subject: data.subject ?? "",
+      };
+    });
 
     return expenses;
   } catch (error) {

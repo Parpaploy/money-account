@@ -15,11 +15,11 @@ export default function SidebarButton(props: ISidebarButton) {
           props.setIsPopup(false);
         }
       }}
-      className={`w-full hover:cursor-pointer ${
+      className={`w-full ${
         currentPath.pathname === targetPath
-          ? "text-[#F7EAA0] hover:text-[#f0e398] bg-[#fd8b8b] hover:bg-[#f58585]"
-          : "bg-[#F7EAA0] hover:bg-[#f0e398] text-[#fd8b8b] hover:text-[#f58585]"
-      } rounded-lg lg:py-10 md:py-6 py-3 text-3xl font-[500] mt-1 md:mt-2`}
+          ? "text-[#F7EAA0] bg-[#fd8b8b]"
+          : "bg-[#F7EAA0] hover:bg-[#f0e398] text-[#fd8b8b] hover:text-[#f58585] hover:cursor-pointer"
+      } rounded-lg 2xl:py-10 lg:py-8.5 md:py-6 py-3 text-3xl font-[500] mt-1 md:mt-2`}
       style={{
         boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
       }}

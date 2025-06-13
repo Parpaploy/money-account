@@ -17,8 +17,8 @@ export default function PrivateSidebar({
   const navigator = useNavigate();
 
   return isPopup ? (
-    <div className="flex flex-col gap-5 w-full h-[92svh] min-h-[92svh] overflow-y-auto bg-[#A9D0E7] px-10 py-7 justify-start">
-      <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 w-full h-[92svh] min-h-[92svh] bg-[#A9D0E7] px-10 py-7 justify-start overflow-y-auto">
+      <div className="flex flex-col gap-5 h-full">
         <SidebarButton
           path=""
           username={username as string}
@@ -37,6 +37,20 @@ export default function PrivateSidebar({
           path="addexpense"
           username={username as string}
           title="Add Expense"
+          isMobile={true}
+          setIsPopup={setIsPopup}
+        />
+        <SidebarButton
+          path="editcategory"
+          username={username as string}
+          title="Edit Category"
+          isMobile={true}
+          setIsPopup={setIsPopup}
+        />
+        <SidebarButton
+          path="editexpense"
+          username={username as string}
+          title="Edit Expense"
           isMobile={true}
           setIsPopup={setIsPopup}
         />
@@ -84,6 +98,20 @@ export default function PrivateSidebar({
         path="addexpense"
         username={username as string}
         title="Add Expense"
+        isMobile={false}
+        setIsPopup={setIsPopup}
+      />
+      <SidebarButton
+        path="editcategory"
+        username={username as string}
+        title="Edit Category"
+        isMobile={false}
+        setIsPopup={setIsPopup}
+      />
+      <SidebarButton
+        path="editexpense"
+        username={username as string}
+        title="Edit Expense"
         isMobile={false}
         setIsPopup={setIsPopup}
       />

@@ -31,9 +31,7 @@ export default function PrivateNavbar({
 
       <button
         className={`lg:hidden md:w-12 md:h-12 w-9 h-9 text-center hover:cursor-pointer text-lg md:text-2xl ${
-          isPopup
-            ? "bg-[#A9D0E7] text-[#F7EAA0]"
-            : "bg-[#F7EAA0] text-[#fd8b8b]"
+          isPopup ? "bg-[#233370] text-white" : "bg-[#F7EAA0] text-[#fd8b8b]"
         } rounded-full font-bold flex items-center justify-center`}
         style={{
           boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",

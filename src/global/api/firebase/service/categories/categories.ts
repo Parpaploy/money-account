@@ -4,6 +4,7 @@ import {
   getDocs,
   getFirestore,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 export const GetCategories = async (uid: string): Promise<any> => {
@@ -53,6 +54,28 @@ export const CreateCategory = async (
     });
   } catch (error) {
     console.error("Error creating category:", error);
+    throw error;
+  }
+};
+
+export const EditCategories = async (
+  uid: string,
+  id: string,
+  color: string,
+  priority: number,
+  usageLimit: number
+): Promise<void> => {
+  try {
+    const categoryDoc = doc(getFirestore(), "users", uid, "categories", id);
+
+    await updateDoc(categoryDoc, {
+      id,
+      color,
+      priority,
+      usageLimit,
+    });
+  } catch (error) {
+    console.error("Error editing category:", error);
     throw error;
   }
 };
