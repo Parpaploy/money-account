@@ -7,6 +7,7 @@ import { GetCategories } from "../../global/api/firebase/service/categories/cate
 import EditExpensePopup from "../expenses-page/components/edit-expense-popup";
 import { AiFillEdit } from "react-icons/ai";
 import { useToken } from "../../hooks/token-hook";
+import EditCategoryPopup from "../categories-page/components/edit-category-popup";
 
 export default function DashboardPage() {
   const { username } = useParams();
@@ -23,19 +24,30 @@ export default function DashboardPage() {
   const uid = getLocalToken();
 
   const [isPopup, setIsPopup] = useState<boolean>(false);
+  const [isEditCategoryPopup, setIsEditCategoryPopup] =
+    useState<boolean>(false);
   const [selectedExpense, setSelectedExpense] = useState<any | null>(null);
+  const [currentCategory, setCurrentCategory] = useState<string>("");
+  const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     (async () => {
       await GetCategories(uid as string);
       loadData();
-      setIsPopup(false);
     })();
+  }, [uid, loadData]);
+
+  useEffect(() => {
+    setIsPopup(false);
+    setIsEditCategoryPopup(false);
   }, []);
 
   if (!username) {
     return <>Loading...</>;
   }
+
   return (
     <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] flex flex-col relative">
       <div className="w-full h-full bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 md:px-6 lg:py-8 md:py-5 pt-[103%] px-3 flex lg:flex-row flex-col justify-center lg:gap-10 md:gap-3 gap-3">
@@ -47,6 +59,7 @@ export default function DashboardPage() {
             <BarChart type="outcome" data={expenseByCategoryOutcome} />
           </div>
         </div>
+
         <div
           className="lg:w-[50%] w-full lg:h-full md:min-h-[70%] min-h-[400%] bg-white rounded-3xl overflow-y-auto p-5 flex flex-col gap-7"
           style={{
@@ -64,6 +77,11 @@ export default function DashboardPage() {
                 );
               });
             const netAmount = expenseByCategoryNet[index];
+            const isDark = isColorDark(category.color);
+            const textColorClass = isDark ? "text-white" : "text-black";
+
+            const firstExpense = expensesInCategory[0] || null;
+            const isHovered = hoveredCategoryId === category.id;
 
             return (
               <div key={category.id}>
@@ -71,7 +89,29 @@ export default function DashboardPage() {
                   className="border-b-2 border-gray-200 md:text-2xl text-xl font-bold mb-2 flex justify-between items-center"
                   style={{ color: category.color }}
                 >
-                  <p>{category.id}:</p>
+                  <div className="flex justify-start items-center gap-2">
+                    {firstExpense && (
+                      <button
+                        onClick={() => {
+                          setCurrentCategory(category.id);
+                          setIsEditCategoryPopup(true);
+                        }}
+                        onMouseEnter={() => setHoveredCategoryId(category.id)}
+                        onMouseLeave={() => setHoveredCategoryId(null)}
+                        className={`rounded-full p-1 hover:cursor-pointer ${
+                          textColorClass === "text-white"
+                            ? "hover:text-white"
+                            : "hover:text-black"
+                        }`}
+                        style={{
+                          backgroundColor: isHovered ? category.color : "",
+                        }}
+                      >
+                        <AiFillEdit />
+                      </button>
+                    )}
+                    <p>{category.id}:</p>
+                  </div>
                   <p className="font-medium text-lg">
                     {netAmount.toLocaleString()} / {category.usageLimit}
                   </p>
@@ -140,6 +180,7 @@ export default function DashboardPage() {
             );
           })}
         </div>
+
         <div className="lg:hidden flex md:flex-row flex-col w-full h-full gap-3">
           <div className="w-full md:h-65 h-45">
             <BarChart type="income" data={expenseByCategoryIncome} />
@@ -164,6 +205,15 @@ export default function DashboardPage() {
             dateTime: selectedExpense.dateTime,
           }}
           loadData={loadData}
+        />
+      )}
+
+      {isEditCategoryPopup && (
+        <EditCategoryPopup
+          setIsPopup={setIsEditCategoryPopup}
+          currentCategory={currentCategory}
+          categories={categories}
+          reloadCategories={loadData}
         />
       )}
     </div>

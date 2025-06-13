@@ -60,7 +60,7 @@ export default function EditExpensePopup({
       setSubject(initialData.subject);
       setDateTime(initialData.dateTime);
     }
-  }, [uid, initialData]);
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-[rgba(0,0,0,0.7)] flex items-center justify-center z-50">
@@ -82,7 +82,7 @@ export default function EditExpensePopup({
             <div className="w-full lg:w-[30%] bg-[#ffaaaa] text-[#fff6c0] p-4 rounded-xl">
               <label className="block text-lg mb-1">Category:</label>
               <select
-                className="w-full bg-[#fff6c0] text-[#ffaaaa] font-bold p-2 rounded-2xl"
+                className="w-full bg-[#fff6c0] text-[#ffaaaa] font-bold p-2 rounded-2xl cursor-pointer"
                 value={expenseCategory}
                 onChange={(e) => setExpenseCategory(e.target.value)}
               >
@@ -98,7 +98,7 @@ export default function EditExpensePopup({
             <div className="w-full lg:w-[30%] bg-[#ffaaaa] text-[#fff6c0] p-4 rounded-xl">
               <label className="block text-lg mb-1">Expense Type:</label>
               <select
-                className="w-full bg-[#fff6c0] text-[#ffaaaa] font-bold p-2 rounded-2xl"
+                className="w-full bg-[#fff6c0] text-[#ffaaaa] font-bold p-2 rounded-2xl cursor-pointer"
                 value={expenseType}
                 onChange={(e) => setExpenseType(e.target.value)}
               >

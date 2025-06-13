@@ -42,7 +42,7 @@ export default function EditCategoryPopup({
       setPriority(theCategory.priority.toString());
       setUsageLimit(theCategory.usageLimit.toString());
     }
-  }, [uid, currentCategory, categories]);
+  }, []);
 
   const hasChanged = useMemo(() => {
     if (!originalCategory) return false;
@@ -83,7 +83,7 @@ export default function EditCategoryPopup({
                   Priority:
                 </label>
                 <select
-                  className="bg-[#fff6c0] text-[#ffaaaa] font-bold p-1 rounded-3xl ml-2 hover:cursor-pointer"
+                  className="bg-[#fff6c0] text-[#ffaaaa] font-bold p-1 rounded-3xl ml-2 hover:cursor-pointer cursor-pointer"
                   id="category"
                   name="category"
                   value={priority}
