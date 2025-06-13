@@ -163,6 +163,7 @@ export default function DashboardPage() {
             subject: selectedExpense.subject,
             dateTime: selectedExpense.dateTime,
           }}
+          loadData={loadData}
         />
       )}
     </div>

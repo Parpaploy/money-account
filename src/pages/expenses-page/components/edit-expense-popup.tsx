@@ -9,6 +9,7 @@ import { IoCloseCircle } from "react-icons/io5";
 export default function EditExpensePopup({
   setIsPopup,
   initialData,
+  loadData,
 }: {
   setIsPopup: (isPopup: boolean) => void;
   initialData: {
@@ -21,6 +22,7 @@ export default function EditExpensePopup({
     subject: string;
     dateTime: string;
   };
+  loadData: () => void;
 }) {
   const { getLocalToken } = useToken();
   const { categories } = useData();
@@ -217,6 +219,7 @@ export default function EditExpensePopup({
                   setSubject,
                   setDateTime
                 );
+                loadData();
               }}
             >
               Edit
