@@ -29,7 +29,6 @@ export default function EditExpensePopup({
   const inputRef = useRef<HTMLInputElement>(null);
   const uid = getLocalToken();
 
-  const [id, setId] = useState<string>("");
   const [expenseId, setExpenseId] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [expenseCategory, setExpenseCategory] = useState<string>("");
@@ -49,7 +48,6 @@ export default function EditExpensePopup({
     dateTime !== initialData.dateTime;
 
   useEffect(() => {
-    if (uid) setId(uid);
     if (initialData) {
       setExpenseId(initialData.id);
       setAmount(initialData.amount);
