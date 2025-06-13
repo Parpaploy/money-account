@@ -20,13 +20,13 @@ export const CreateExpenseHandler = async (
   setMerchant: (input: string) => void,
   setSubject: (input: string) => void,
   setDateTime: (input: string) => void,
-  expenseCategory: string,
-  reloadExpenses: () => void
+  navigator: (path: string) => void,
+  username: string
 ) => {
   try {
     if (amount && category && expenseType && dateTime && subject) {
       await CreateExpense(
-        uid as string,
+        uid,
         amount,
         category,
         expenseType,
@@ -35,7 +35,6 @@ export const CreateExpenseHandler = async (
         subject,
         dateTime
       );
-      const amountNumber = Number(amount);
 
       Swal.fire({
         title: "Add Expense successfully!",
@@ -43,7 +42,7 @@ export const CreateExpenseHandler = async (
         draggable: true,
         confirmButtonText: "Continue",
       }).then(() => {
-        setExpenseCategory(expenseCategory);
+        setExpenseCategory(category);
         setAmount("");
         setExpenseType("outcome");
         setDescription("");
@@ -51,10 +50,8 @@ export const CreateExpenseHandler = async (
         setSubject("");
         setDateTime("");
 
-        reloadExpenses();
+        navigator(`/private/${username}/`);
       });
-
-      return amountNumber;
     } else {
       Swal.fire({
         icon: "error",
@@ -89,7 +86,7 @@ export const EditExpenseHandler = async (
   setMerchant: (input: string) => void,
   setSubject: (input: string) => void,
   setDateTime: (input: string) => void
-): Promise<any> => {
+): Promise<void> => {
   if (amount && category && expenseType && subject && dateTime) {
     await EditExpense(
       uid,

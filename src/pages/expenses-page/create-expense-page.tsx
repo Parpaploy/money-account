@@ -27,7 +27,7 @@ export default function CreateExpensePage() {
 
   useEffect(() => {
     if (uid) setId(uid);
-  }, []);
+  }, [uid]);
 
   useEffect(() => {
     if (categories.length > 0) {
@@ -48,7 +48,7 @@ export default function CreateExpensePage() {
           New Expense
         </h1>
         <div className="w-full md:p-5 p-3 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
-          <label className="md:text-xl text-md" htmlFor="Category">
+          <label className="md:text-xl text-md" htmlFor="category">
             Category:
           </label>
           <select
@@ -64,18 +64,16 @@ export default function CreateExpensePage() {
               boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
             }}
           >
-            {categories.map((category) => {
-              return (
-                <option key={category.id} value={category.id}>
-                  {category.id}
-                </option>
-              );
-            })}
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.id}
+              </option>
+            ))}
           </select>
         </div>
 
         <div className="w-full md:p-5 p-3 rounded-xl focus:outline-none focus:ring-transparent bg-[#ffaaaa] text-[#fff6c0]">
-          <label className="md:text-xl text-md" htmlFor="ExpenseType">
+          <label className="md:text-xl text-md" htmlFor="expensetype">
             Expense Type:
           </label>
           <select
@@ -91,8 +89,8 @@ export default function CreateExpensePage() {
               boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
             }}
           >
-            <option value="outcome">Outcome</option>;
-            <option value="income">Income</option>;
+            <option value="outcome">Outcome</option>
+            <option value="income">Income</option>
           </select>
         </div>
 
@@ -108,7 +106,6 @@ export default function CreateExpensePage() {
               boxShadow: "rgba(17, 17, 26, 0.05) 1px 1px 2px",
             }}
           />
-
           <div
             className="absolute bg-[#ffaaaa] text-[#fff6c0] text-xl lg:w-8 lg:h-8 w-8 h-8 text-center rounded-full lg:right-4 lg:top-5 md:top-4 md:right-4 top-2 right-3 hover:cursor-pointer flex items-center justify-center"
             onClick={() => inputRef.current?.showPicker?.()}
@@ -192,8 +189,6 @@ export default function CreateExpensePage() {
               merchant,
               subject,
               dateTime,
-              navigate,
-              username as string,
               setAmount,
               setExpenseCategory,
               setExpenseType,
@@ -201,7 +196,8 @@ export default function CreateExpensePage() {
               setMerchant,
               setSubject,
               setDateTime,
-              categories[0].id
+              navigate,
+              username as string
             );
           }}
         >
