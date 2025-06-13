@@ -71,7 +71,7 @@ export default function EditCategoryPopup({
           <IoCloseCircle />
         </button>
 
-        <div className="flex flex-col rounded-xl 2xl:gap-10 md:gap-5 gap-[5%] w-full text-[#ffaaaa] text-2xl 2xl:px-15 lg:px-10 md:px-12 2xl:py-15 lg:py-10 md:py-12 py-[7%] p-8 overflow-y-auto">
+        <div className="flex flex-col rounded-xl 2xl:gap-10 md:gap-5 gap-[5%] w-full text-[#ffaaaa] text-2xl 2xl:px-15 lg:px-10 md:px-12 2xl:py-15 lg:py-10 md:py-12 py-[7%] p-8 overflow-y-auto overflow-x-hidden">
           <h1 className="text-[#fd8b8b] font-bold md:text-3xl text-2xl mb-5">
             Edit Category
           </h1>
@@ -117,7 +117,7 @@ export default function EditCategoryPopup({
                   name="color"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  className="absolute lg:top-3 2xl:left-28 lg:left-24 top-2 md:left-20 md:top-4 left-2 w-full h-full opacity-0 cursor-pointer"
+                  className="absolute lg:top-3 2xl:top-5 2xl:left-28 lg:left-24 top-2 md:left-20 md:top-4 left-2 w-full h-full opacity-0 cursor-pointer"
                   required
                 />
               </div>

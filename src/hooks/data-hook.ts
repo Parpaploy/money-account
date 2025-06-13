@@ -47,6 +47,22 @@ export const useData = () => {
       .reduce((sum, exp) => sum + exp.amountNumber, 0);
   });
 
+  const expenseByCategoryNet = categories.map((category) => {
+    const totalIncome = expenses
+      .filter(
+        (exp) => exp.category === category.id && exp.expenseType === "income"
+      )
+      .reduce((sum, exp) => sum + exp.amountNumber, 0);
+
+    const totalOutcome = expenses
+      .filter(
+        (exp) => exp.category === category.id && exp.expenseType === "outcome"
+      )
+      .reduce((sum, exp) => sum + exp.amountNumber, 0);
+
+    return totalIncome - totalOutcome;
+  });
+
   const loadData = async () => {
     if (!uid) return;
     setLoading(true);
@@ -72,6 +88,7 @@ export const useData = () => {
     expenseByCategory,
     expenseByCategoryIncome,
     expenseByCategoryOutcome,
+    expenseByCategoryNet,
     loadData,
   };
 };

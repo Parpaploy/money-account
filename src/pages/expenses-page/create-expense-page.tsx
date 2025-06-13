@@ -138,6 +138,19 @@ export default function CreateExpensePage() {
         </div>
 
         <InputBox
+          header="Subject"
+          id="subject"
+          type="text"
+          value={subject}
+          setValue={setSubject}
+          font="bold"
+          textSize="3xl"
+          px="5"
+          py="3"
+          isRequire={false}
+        />
+
+        <InputBox
           header="Description"
           id="description"
           type="text"
@@ -155,18 +168,6 @@ export default function CreateExpensePage() {
           type="text"
           value={merchant}
           setValue={setMerchant}
-          font="bold"
-          textSize="3xl"
-          px="5"
-          py="3"
-          isRequire={false}
-        />
-        <InputBox
-          header="Subject"
-          id="subject"
-          type="text"
-          value={subject}
-          setValue={setSubject}
           font="bold"
           textSize="3xl"
           px="5"

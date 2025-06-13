@@ -4,6 +4,7 @@ import {
   getDocs,
   getFirestore,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import type { IExpenseData } from "../../../../../interfaces/data.interface";
 
@@ -72,6 +73,42 @@ export const CreateExpense = async (
     });
   } catch (error) {
     console.error("Error creating expense:", error);
+    throw error;
+  }
+};
+
+export const EditExpense = async (
+  uid: string,
+  expenseId: string,
+  amount: string,
+  category: string,
+  expenseType: string,
+  description: string,
+  merchant: string,
+  subject: string,
+  dateTime: string
+): Promise<void> => {
+  try {
+    const expenseDocRef = doc(
+      getFirestore(),
+      "users",
+      uid,
+      "expenses",
+      expenseId
+    );
+
+    await updateDoc(expenseDocRef, {
+      amount: amount,
+      amountNumber: Number(amount),
+      category: category,
+      expenseType: expenseType,
+      description: description,
+      merchant: merchant,
+      subject: subject,
+      dateTime: dateTime,
+    });
+  } catch (error) {
+    console.error("Error updating expense:", error);
     throw error;
   }
 };

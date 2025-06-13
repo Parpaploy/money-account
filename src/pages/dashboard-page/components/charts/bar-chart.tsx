@@ -23,7 +23,7 @@ export default function BarChart({ type, data }: { type: string; data: any }) {
 
   return (
     <div
-      className="w-full h-full rounded-3xl px-7 py-3"
+      className="w-full h-full rounded-3xl md:px-7 md:py-3 px-3 py-1"
       style={{
         boxShadow:
           "rgba(17, 17, 26, 0.05) 3px 3px 6px 0px inset,rgba(17, 17, 26, 0.05) -3px -3px 6px 1px inset",
