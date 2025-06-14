@@ -1,6 +1,5 @@
 import { useData } from "../../hooks/data-hook";
 import { useEffect, useRef, useState } from "react";
-import { GetCategories } from "../../global/api/firebase/service/categories/categories";
 import EditExpensePopup from "../expenses-page/components/edit-expense-popup";
 import { AiFillEdit } from "react-icons/ai";
 import { useToken } from "../../hooks/token-hook";
@@ -8,10 +7,13 @@ import { formatDate, isColorDark } from "../dashboard-page/dashboard";
 import { LuCalendar1 } from "react-icons/lu";
 import { RiResetLeftLine } from "react-icons/ri";
 import { BiChevronDown, BiChevronUp } from "react-icons/bi";
+import { DeleteExpenseHandler } from "./expenses";
+import { FaTrashCan } from "react-icons/fa6";
 
 export default function EditExpensePage() {
   const { getLocalToken } = useToken();
-  const { categories, expenseByCategory, loadData } = useData();
+  // รับ expenses ตรงๆ มาใช้ แทน expenseByCategory
+  const { categories, expenses, loadData } = useData();
 
   const uid = getLocalToken();
 
@@ -28,19 +30,14 @@ export default function EditExpensePage() {
   const startRef = useRef<HTMLInputElement>(null);
   const endRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    (async () => {
-      await GetCategories(uid as string);
-      loadData();
-      setIsPopup(false);
-    })();
-  }, []);
-
-  const allExpenses = expenseByCategory.flat();
+  const allExpenses = expenses;
 
   const filteredExpenses = allExpenses.filter((expense) => {
     const matchCategory =
-      selectedCategoryId === "all" || expense.category === selectedCategoryId;
+      selectedCategoryId === "all" ||
+      (selectedCategoryId === "uncategorized" &&
+        (!expense.category || expense.category === "uncategorized")) ||
+      expense.category === selectedCategoryId;
 
     const expenseDate = new Date(expense.dateTime);
     const start = startDate ? new Date(startDate) : null;
@@ -60,6 +57,9 @@ export default function EditExpensePage() {
   filteredExpenses.sort(
     (a, b) => new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
   );
+
+  console.log("Category ID Selected:", selectedCategoryId);
+  console.log("Filtered:", filteredExpenses);
 
   return (
     <div className="w-full min-h-screen bg-[#fef6ea] relative">
@@ -92,15 +92,14 @@ export default function EditExpensePage() {
         {/* Filter Controls */}
         <div
           className={`bg-[#fef6ea] lg:overflow-x-auto w-full flex flex-wrap gap-4 items-center transition-all duration-300 ease-in-out px-7 md:px-10 2xl:px-30 lg:py-8 pt-0 pb-3
-    ${
-      isFilterOpen
-        ? "max-h-[1000px] opacity-100 pointer-events-auto visible"
-        : "max-h-0 opacity-0 pointer-events-none invisible overflow-hidden"
-    } lg:max-h-full lg:opacity-100 lg:flex-nowrap lg:overflow-x-auto`}
-          style={{
-            maxWidth: "100vw",
-          }}
+      ${
+        isFilterOpen
+          ? "max-h-[1000px] opacity-100 pointer-events-auto visible"
+          : "max-h-0 opacity-0 pointer-events-none invisible overflow-hidden"
+      } lg:max-h-full lg:opacity-100 lg:flex-nowrap lg:overflow-x-auto`}
+          style={{ maxWidth: "100vw" }}
         >
+          {/* Category Filter - Desktop */}
           <div className="hidden lg:block bg-[#ffaaaa] text-[#fff6c0] p-4.5 rounded-xl">
             <label className="block text-lg mb-1 font-bold">Category: </label>
             <select
@@ -109,6 +108,7 @@ export default function EditExpensePage() {
               className="w-full bg-[#fff6c0] text-[#ffaaaa] cursor-pointer font-bold p-2 rounded-2xl"
             >
               <option value="all">All</option>
+              <option value="uncategorized">(Uncategorized)</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.id}
@@ -117,7 +117,7 @@ export default function EditExpensePage() {
             </select>
           </div>
 
-          {/* Category Filter */}
+          {/* Category Filter - Mobile */}
           <div className="lg:hidden flex w-full justify-start gap-7 items-center">
             <div className="bg-[#ffaaaa] text-[#fff6c0] p-4.5 rounded-xl">
               <label className="block text-lg mb-1 font-bold">Category: </label>
@@ -127,14 +127,20 @@ export default function EditExpensePage() {
                 className="w-full bg-[#fff6c0] text-[#ffaaaa] cursor-pointer font-bold p-2 rounded-2xl"
               >
                 <option value="all">All</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.id}
-                  </option>
-                ))}
+                <option value="uncategorized">(Uncategorized)</option>
+                {categories.map(
+                  (
+                    cat // **สำคัญ**: ไม่มี .filter((cat) => cat.id !== "uncategorized") แล้ว
+                  ) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.id}
+                    </option>
+                  )
+                )}
               </select>
             </div>
 
+            {/* Reset Filters */}
             <button
               className="lg:hidden bg-[#fff6c0] text-[#ffaaaa] p-4 rounded-full cursor-pointer hover:bg-[#ebe3b1] hover:text-[#ef9f9f] "
               style={{
@@ -150,7 +156,7 @@ export default function EditExpensePage() {
             </button>
           </div>
 
-          {/* Search */}
+          {/* Search Input */}
           <div className="lg:min-w-[200px] bg-[#ffaaaa] text-[#fff6c0] p-4.5 rounded-xl">
             <label className="block text-lg mb-1 font-bold">
               Search Subject:
@@ -200,7 +206,7 @@ export default function EditExpensePage() {
             </div>
           </div>
 
-          {/* Clear Filters */}
+          {/* Reset Filters Desktop */}
           <button
             className="hidden lg:block bg-[#fff6c0] text-[#ffaaaa] p-4 rounded-full cursor-pointer hover:bg-[#ebe3b1] hover:text-[#ef9f9f] "
             style={{
@@ -231,14 +237,17 @@ export default function EditExpensePage() {
               const category = categories.find(
                 (c) => c.id === expense.category
               );
+              // ถ้าหา category ไม่เจอ หรือ category เป็น "uncategorized" ให้ใช้สีเทา
               const bgColor = category ? category.color : "#ccc";
-              const isDark = category ? isColorDark(category.color) : false;
+              const isDark = category
+                ? isColorDark(category.color)
+                : isColorDark("#ccc"); // เช็คสีเทาด้วย
               const textColorClass = isDark ? "text-white" : "text-black";
 
               return (
                 <li
                   key={expense.id}
-                  className={`px-3 py-2 text-lg font-medium rounded-lg min-h-25 h-25 ${textColorClass}`}
+                  className={`px-3 py-2 text-lg font-medium rounded-lg min-h-31 h-31 ${textColorClass}`}
                   style={{ backgroundColor: bgColor }}
                 >
                   <div className="flex justify-between items-start w-full h-full">
@@ -256,6 +265,13 @@ export default function EditExpensePage() {
                         <p className="truncate whitespace-nowrap">
                           {expense.merchant}
                         </p>
+                        <p className="truncate whitespace-nowrap">
+                          Category:{" "}
+                          {!expense.category ||
+                          expense.category === "uncategorized" // ตรงนี้ใช้ logic เดิมได้
+                            ? "(Uncategorized)"
+                            : expense.category}
+                        </p>
                       </div>
                     </div>
 
@@ -264,19 +280,39 @@ export default function EditExpensePage() {
                         {expense.expenseType === "income" ? "+" : "-"}
                         {expense.amountNumber}
                       </div>
-                      <button
-                        onClick={() => {
-                          setSelectedExpense(expense);
-                          setIsPopup(true);
-                        }}
-                        className={`rounded-full p-1 hover:cursor-pointer ${
-                          textColorClass === "text-white"
-                            ? "hover:bg-white hover:text-black"
-                            : "hover:bg-black hover:text-white"
-                        }`}
-                      >
-                        <AiFillEdit />
-                      </button>
+                      <div className="flex justify-center items-center">
+                        <button
+                          onClick={() => {
+                            setSelectedExpense(expense);
+                            setIsPopup(true);
+                          }}
+                          className={`rounded-full p-1 hover:cursor-pointer ${
+                            textColorClass === "text-white"
+                              ? "hover:bg-white hover:text-black"
+                              : "hover:bg-black hover:text-white"
+                          }`}
+                        >
+                          <AiFillEdit />
+                        </button>
+
+                        <button
+                          onClick={async () => {
+                            await DeleteExpenseHandler(
+                              uid as string,
+                              expense.id,
+                              expense.subject
+                            );
+                            loadData(); // ให้ loadData() อัปเดตข้อมูลหลังลบ
+                          }}
+                          className={`rounded-full text-sm hover:cursor-pointer p-1.5 ${
+                            textColorClass === "text-white"
+                              ? "hover:bg-white hover:text-black"
+                              : "hover:bg-black hover:text-white"
+                          }`}
+                        >
+                          <FaTrashCan />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </li>

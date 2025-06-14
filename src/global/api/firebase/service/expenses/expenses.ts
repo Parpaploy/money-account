@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   getFirestore,
@@ -109,6 +110,17 @@ export const EditExpense = async (
     });
   } catch (error) {
     console.error("Error updating expense:", error);
+    throw error;
+  }
+};
+
+export const DeleteExpense = async (uid: string, id: string) => {
+  try {
+    const expenseDoc = doc(getFirestore(), "users", uid, "expenses", id);
+
+    await deleteDoc(expenseDoc);
+  } catch (error) {
+    console.error("Error deleting expense:", error);
     throw error;
   }
 };

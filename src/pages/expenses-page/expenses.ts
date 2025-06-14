@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import {
   CreateExpense,
+  DeleteExpense,
   EditExpense,
 } from "../../global/api/firebase/service/expenses/expenses";
 
@@ -119,6 +120,37 @@ export const EditExpenseHandler = async (
     Swal.fire({
       icon: "error",
       title: "Please provide the properly data",
+      confirmButtonText: "Ok",
+    });
+  }
+};
+
+export const DeleteExpenseHandler = async (
+  uid: string,
+  id: string,
+  subject: string
+) => {
+  if (uid && id) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to delete expense "${subject}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      await DeleteExpense(uid, id);
+      await Swal.fire({
+        title: "Deleted!",
+        text: "The expense has been deleted.",
+        icon: "success",
+      });
+    }
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Failed to delete expense. Please try again later",
       confirmButtonText: "Ok",
     });
   }

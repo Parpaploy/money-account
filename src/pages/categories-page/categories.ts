@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import {
   CreateCategory,
+  DeleteCategory,
   EditCategories,
 } from "../../global/api/firebase/service/categories/categories";
 
@@ -17,7 +18,7 @@ export const CreateCategoryHandler = async (
   setPriority: (input: string) => void,
   setUsageLimit: (input: string) => void
 ) => {
-  if (id && color && priority && usageLimit) {
+  if (id && color && priority) {
     await CreateCategory(uid, id, color, priority, usageLimit);
 
     Swal.fire({
@@ -55,7 +56,7 @@ export const EditCategoryHandler = async (
   setIsPopup: (isPopup: boolean) => void,
   reloadCategories: () => void
 ): Promise<any> => {
-  if (id && color && priority && usageLimit) {
+  if (id && color && priority) {
     await EditCategories(uid, id, color, priority, usageLimit);
 
     Swal.fire({
@@ -76,6 +77,33 @@ export const EditCategoryHandler = async (
     Swal.fire({
       icon: "error",
       title: "Please provide the properly data",
+      confirmButtonText: "Ok",
+    });
+  }
+};
+
+export const DeleteCategoryHandler = async (id: string, categoryId: string) => {
+  if (id && categoryId) {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: `Do you want to delete category "${categoryId}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (result.isConfirmed) {
+      await DeleteCategory(id, categoryId);
+      await Swal.fire({
+        title: "Deleted!",
+        text: "The category has been deleted.",
+        icon: "success",
+      });
+    }
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Failed to delete category. Please try again later",
       confirmButtonText: "Ok",
     });
   }

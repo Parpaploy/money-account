@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useToken } from "../../hooks/token-hook";
-import { GetCategories } from "../../global/api/firebase/service/categories/categories";
 import { useData } from "../../hooks/data-hook";
 import { AiFillEdit } from "react-icons/ai";
 import EditCategoryPopup from "./components/edit-category-popup";
+import { FaTrashCan } from "react-icons/fa6";
+import { DeleteCategoryHandler } from "./categories";
 
 export default function EditCategoryPage() {
   const { getLocalToken } = useToken();
@@ -15,16 +16,14 @@ export default function EditCategoryPage() {
   const [currentCategory, setCurrentCategory] = useState<string>("");
 
   useEffect(() => {
-    (async () => {
-      await GetCategories(uid as string);
-      loadData();
-      setIsPopup(false);
-    })();
+    setIsPopup(false);
   }, []);
 
   return (
     <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] 2xl:px-30 2xl:py-20 md:px-10 py-8 px-7 flex flex-col md:gap-7 gap-5 relative">
       {categories.map((category) => {
+        const isUncategorized = category.id === "uncategorized";
+
         return (
           <div
             key={category.id}
@@ -44,25 +43,41 @@ export default function EditCategoryPage() {
             <div className="flex flex-col justify-center items-center">
               <p className="font-medium md:text-md text-sm">Usage Limit</p>
               <p className="font-semibold md:text-xl text-md">
-                {category.usageLimit}
+                {isUncategorized ? "-" : category.usageLimit}
               </p>
             </div>
             <div className="flex flex-col justify-center items-center">
               <p className="font-medium md:text-md text-sm">Priority</p>
               <p className="font-semibold md:text-xl text-md">
-                {category.priority}
+                {isUncategorized ? "-" : category.priority}
               </p>
             </div>
 
-            <button
-              onClick={() => {
-                setIsPopup(true);
-                setCurrentCategory(category.id);
-              }}
-              className="md:text-2xl text-xl hover:bg-[#242E68] hover:text-white hover:cursor-pointer rounded-full p-1"
-            >
-              <AiFillEdit />
-            </button>
+            <div className="flex gap-1 justify-center items-center">
+              {!isUncategorized && (
+                <button
+                  onClick={() => {
+                    setIsPopup(true);
+                    setCurrentCategory(category.id);
+                  }}
+                  className="md:text-2xl text-xl hover:bg-[#242E68] hover:text-white hover:cursor-pointer rounded-full p-1"
+                >
+                  <AiFillEdit />
+                </button>
+              )}
+
+              {!isUncategorized && (
+                <button
+                  onClick={async () => {
+                    await DeleteCategoryHandler(uid as string, category.id);
+                    loadData();
+                  }}
+                  className={`text-lg hover:bg-[#242E68] hover:text-white hover:cursor-pointer rounded-full p-2`}
+                >
+                  <FaTrashCan />
+                </button>
+              )}
+            </div>
           </div>
         );
       })}

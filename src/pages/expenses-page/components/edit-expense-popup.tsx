@@ -89,6 +89,7 @@ export default function EditExpensePopup({
                     {category.id}
                   </option>
                 ))}
+                <option value={"uncategorized"}>uncategorized</option>
               </select>
             </div>
 

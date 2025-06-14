@@ -3,6 +3,7 @@ export interface ICategoryData {
   color: string;
   priority: number;
   usageLimit: number;
+  name?: string;
 }
 
 export interface IExpenseData {

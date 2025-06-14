@@ -3,17 +3,19 @@ import BarChart from "./components/charts/bar-chart";
 import { useData } from "../../hooks/data-hook";
 import { formatDate, isColorDark } from "./dashboard";
 import { useEffect, useState } from "react";
-import { GetCategories } from "../../global/api/firebase/service/categories/categories";
 import EditExpensePopup from "../expenses-page/components/edit-expense-popup";
 import { AiFillEdit } from "react-icons/ai";
 import { useToken } from "../../hooks/token-hook";
 import EditCategoryPopup from "../categories-page/components/edit-category-popup";
+import { FaTrashCan } from "react-icons/fa6";
+import { DeleteCategoryHandler } from "../categories-page/categories";
+import { DeleteExpenseHandler } from "../expenses-page/expenses";
 
 export default function DashboardPage() {
   const { username } = useParams();
   const {
     categories,
-    expenseByCategory,
+    expenses,
     expenseByCategoryIncome,
     expenseByCategoryOutcome,
     expenseByCategoryNet,
@@ -31,13 +33,9 @@ export default function DashboardPage() {
   const [hoveredCategoryId, setHoveredCategoryId] = useState<string | null>(
     null
   );
-
-  useEffect(() => {
-    (async () => {
-      await GetCategories(uid as string);
-      loadData();
-    })();
-  }, [uid, loadData]);
+  const [hoveredDeleteCategoryId, setHoveredDeleteCategoryId] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     setIsPopup(false);
@@ -49,8 +47,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="w-full h-[90svh] overflow-y-auto bg-[#fef6ea] flex flex-col relative">
-      <div className="w-full h-full bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 md:px-6 lg:py-8 md:py-5 pt-[103%] px-3 flex lg:flex-row flex-col justify-center lg:gap-10 md:gap-3 gap-3">
+    <div className="w-full md:h-[90svh] md:min-h-[90svh] min-h-screen overflow-y-auto bg-[#fef6ea] flex flex-col relative pt-2 pb-3 md:pt-0 md:pb-0">
+      <div className="w-full h-full bg-[#fef6ea] 2xl:px-30 2xl:py-20 lg:px-10 md:px-6 lg:py-8 md:py-5 px-3 flex lg:flex-row flex-col justify-end lg:gap-10 md:gap-3 gap-3">
         <div className="hidden lg:flex flex-col 2xl:justify-between w-[50%] h-full 2xl:gap-0 gap-3">
           <div className="w-full h-96">
             <BarChart type="income" data={expenseByCategoryIncome} />
@@ -61,14 +59,30 @@ export default function DashboardPage() {
         </div>
 
         <div
-          className="lg:w-[50%] w-full lg:h-full md:min-h-[70%] min-h-[400%] bg-white rounded-3xl overflow-y-auto p-5 flex flex-col gap-7"
+          className="lg:w-[50%] w-full lg:h-full lg:max-h-full md:min-h-[70%] md:max-h-full max-h-[55svh] bg-white rounded-3xl overflow-y-auto p-5 flex flex-col gap-7"
           style={{
             boxShadow:
               "rgba(17, 17, 26, 0.05) 3px 3px 6px 0px inset,rgba(17, 17, 26, 0.05) -3px -3px 6px 1px inset",
           }}
         >
           {categories.map((category, index) => {
-            const expensesInCategory = expenseByCategory[index]
+            console.log("Processing Category:", category.id);
+            const expensesInCategory = expenses
+              .filter((exp) => {
+                const isMatch =
+                  category.id === "uncategorized"
+                    ? !exp.category || exp.category === "uncategorized"
+                    : exp.category === category.id;
+
+                if (category.id === "uncategorized" && isMatch) {
+                  console.log(
+                    "Uncategorized expense found:",
+                    exp.subject,
+                    exp.category
+                  );
+                }
+                return isMatch;
+              })
               .slice()
               .sort((a, b) => {
                 return (
@@ -76,12 +90,16 @@ export default function DashboardPage() {
                   new Date(a.dateTime).getTime()
                 );
               });
+
             const netAmount = expenseByCategoryNet[index];
+
             const isDark = isColorDark(category.color);
             const textColorClass = isDark ? "text-white" : "text-black";
 
-            const firstExpense = expensesInCategory[0] || null;
             const isHovered = hoveredCategoryId === category.id;
+            const isDeleteHovered = hoveredDeleteCategoryId === category.id;
+
+            const isUncategorized = category.id === "uncategorized";
 
             return (
               <div key={category.id}>
@@ -90,30 +108,62 @@ export default function DashboardPage() {
                   style={{ color: category.color }}
                 >
                   <div className="flex justify-start items-center gap-2">
-                    {firstExpense && (
-                      <button
-                        onClick={() => {
-                          setCurrentCategory(category.id);
-                          setIsEditCategoryPopup(true);
-                        }}
-                        onMouseEnter={() => setHoveredCategoryId(category.id)}
-                        onMouseLeave={() => setHoveredCategoryId(null)}
-                        className={`rounded-full p-1 hover:cursor-pointer ${
-                          textColorClass === "text-white"
-                            ? "hover:text-white"
-                            : "hover:text-black"
-                        }`}
-                        style={{
-                          backgroundColor: isHovered ? category.color : "",
-                        }}
-                      >
-                        <AiFillEdit />
-                      </button>
-                    )}
+                    <div className="flex justify-center items-center">
+                      {!isUncategorized && (
+                        <button
+                          onClick={async () => {
+                            await DeleteCategoryHandler(
+                              uid as string,
+                              category.id
+                            );
+                            loadData();
+                          }}
+                          onMouseEnter={() =>
+                            setHoveredDeleteCategoryId(category.id)
+                          }
+                          onMouseLeave={() => setHoveredDeleteCategoryId(null)}
+                          className={`rounded-full hover:cursor-pointer text-lg p-2 ${
+                            textColorClass === "text-white"
+                              ? "hover:text-white"
+                              : "hover:text-black"
+                          }`}
+                          style={{
+                            backgroundColor: isDeleteHovered
+                              ? category.color
+                              : "",
+                          }}
+                        >
+                          <FaTrashCan />
+                        </button>
+                      )}
+
+                      {!isUncategorized && (
+                        <button
+                          onClick={() => {
+                            setCurrentCategory(category.id);
+                            setIsEditCategoryPopup(true);
+                          }}
+                          onMouseEnter={() => setHoveredCategoryId(category.id)}
+                          onMouseLeave={() => setHoveredCategoryId(null)}
+                          className={`rounded-full p-1 hover:cursor-pointer ${
+                            textColorClass === "text-white"
+                              ? "hover:text-white"
+                              : "hover:text-black"
+                          }`}
+                          style={{
+                            backgroundColor: isHovered ? category.color : "",
+                          }}
+                        >
+                          <AiFillEdit />
+                        </button>
+                      )}
+                    </div>
+
                     <p>{category.id}:</p>
                   </div>
                   <p className="font-medium text-lg">
-                    {netAmount.toLocaleString()} / {category.usageLimit}
+                    {netAmount.toLocaleString()}{" "}
+                    {category.usageLimit ? `/ ${category.usageLimit}` : ""}
                   </p>
                 </h2>
 
@@ -122,16 +172,17 @@ export default function DashboardPage() {
                 ) : (
                   <ul className="space-y-2 flex flex-col gap-3 overflow-y-auto">
                     {expensesInCategory.map((expense) => {
-                      const isDark = isColorDark(category.color);
-                      const textColorClass = isDark
+                      const itemBgColor = category.color;
+                      const itemIsDark = isColorDark(itemBgColor);
+                      const itemTextColorClass = itemIsDark
                         ? "text-white"
                         : "text-black";
 
                       return (
                         <li
                           key={expense.id}
-                          className={`px-3 py-2 text-lg font-medium rounded-lg min-h-25 h-25 ${textColorClass}`}
-                          style={{ backgroundColor: category.color }}
+                          className={`px-3 py-2 text-lg font-medium rounded-lg min-h-25 h-25 ${itemTextColorClass}`}
+                          style={{ backgroundColor: itemBgColor }}
                         >
                           <div className="flex justify-between items-start w-full h-full">
                             <div className="w-[75%] h-full">
@@ -156,19 +207,39 @@ export default function DashboardPage() {
                                 {expense.expenseType === "income" ? "+" : "-"}
                                 {expense.amountNumber}
                               </div>
-                              <button
-                                onClick={() => {
-                                  setSelectedExpense(expense);
-                                  setIsPopup(true);
-                                }}
-                                className={`rounded-full p-1 hover:cursor-pointer ${
-                                  textColorClass === "text-white"
-                                    ? "hover:bg-white hover:text-black"
-                                    : "hover:bg-black hover:text-white"
-                                }`}
-                              >
-                                <AiFillEdit />
-                              </button>
+                              <div className="flex justify-center items-center">
+                                <button
+                                  onClick={() => {
+                                    setSelectedExpense(expense);
+                                    setIsPopup(true);
+                                  }}
+                                  className={`rounded-full p-1 hover:cursor-pointer ${
+                                    itemTextColorClass === "text-white"
+                                      ? "hover:bg-white hover:text-black"
+                                      : "hover:bg-black hover:text-white"
+                                  }`}
+                                >
+                                  <AiFillEdit />
+                                </button>
+
+                                <button
+                                  onClick={async () => {
+                                    await DeleteExpenseHandler(
+                                      uid as string,
+                                      expense.id,
+                                      expense.subject
+                                    );
+                                    loadData();
+                                  }}
+                                  className={`rounded-full text-sm hover:cursor-pointer p-1.5 ${
+                                    itemTextColorClass === "text-white"
+                                      ? "hover:bg-white hover:text-black"
+                                      : "hover:bg-black hover:text-white"
+                                  }`}
+                                >
+                                  <FaTrashCan />
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </li>
