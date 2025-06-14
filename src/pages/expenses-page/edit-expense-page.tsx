@@ -1,5 +1,5 @@
 import { useData } from "../../hooks/data-hook";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import EditExpensePopup from "../expenses-page/components/edit-expense-popup";
 import { AiFillEdit } from "react-icons/ai";
 import { useToken } from "../../hooks/token-hook";
@@ -12,7 +12,7 @@ import { FaTrashCan } from "react-icons/fa6";
 
 export default function EditExpensePage() {
   const { getLocalToken } = useToken();
-  // รับ expenses ตรงๆ มาใช้ แทน expenseByCategory
+
   const { categories, expenses, loadData } = useData();
 
   const uid = getLocalToken();
@@ -62,7 +62,7 @@ export default function EditExpensePage() {
   console.log("Filtered:", filteredExpenses);
 
   return (
-    <div className="w-full min-h-screen bg-[#fef6ea] relative">
+    <div className="w-full h-[90svh] bg-[#fef6ea] relative">
       {/* Sticky Filter Bar */}
       <div
         className={`sticky top-0 z-10 bg-[#fef6ea] ${
@@ -128,15 +128,11 @@ export default function EditExpensePage() {
               >
                 <option value="all">All</option>
                 <option value="uncategorized">(Uncategorized)</option>
-                {categories.map(
-                  (
-                    cat // **สำคัญ**: ไม่มี .filter((cat) => cat.id !== "uncategorized") แล้ว
-                  ) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.id}
-                    </option>
-                  )
-                )}
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.id}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -237,11 +233,11 @@ export default function EditExpensePage() {
               const category = categories.find(
                 (c) => c.id === expense.category
               );
-              // ถ้าหา category ไม่เจอ หรือ category เป็น "uncategorized" ให้ใช้สีเทา
+
               const bgColor = category ? category.color : "#ccc";
               const isDark = category
                 ? isColorDark(category.color)
-                : isColorDark("#ccc"); // เช็คสีเทาด้วย
+                : isColorDark("#ccc");
               const textColorClass = isDark ? "text-white" : "text-black";
 
               return (
@@ -268,7 +264,7 @@ export default function EditExpensePage() {
                         <p className="truncate whitespace-nowrap">
                           Category:{" "}
                           {!expense.category ||
-                          expense.category === "uncategorized" // ตรงนี้ใช้ logic เดิมได้
+                          expense.category === "uncategorized"
                             ? "(Uncategorized)"
                             : expense.category}
                         </p>
@@ -302,7 +298,7 @@ export default function EditExpensePage() {
                               expense.id,
                               expense.subject
                             );
-                            loadData(); // ให้ loadData() อัปเดตข้อมูลหลังลบ
+                            loadData();
                           }}
                           className={`rounded-full text-sm hover:cursor-pointer p-1.5 ${
                             textColorClass === "text-white"
